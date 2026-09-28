@@ -84,7 +84,7 @@ jobs:
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
-          name: s2t_hud-linux
+          name: customhud_manager-linux
           path: build/package
           if-no-files-found: error
 
@@ -107,7 +107,7 @@ jobs:
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: s2t_hud-windows
+          name: customhud_manager-windows
           path: build/package
           if-no-files-found: error
 
@@ -132,24 +132,24 @@ jobs:
       - name: Download Linux artifact
         uses: actions/download-artifact@v4
         with:
-          name: s2t_hud-linux
+          name: customhud_manager-linux
           path: ./artifacts/linux
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
-          name: s2t_hud-windows
+          name: customhud_manager-windows
           path: ./artifacts/windows
       - name: Create archives
         env:
           VERSION: ${{ needs.version.outputs.tag }}
         run: |
-          tar -czf s2t_hud_${VERSION}-linux.tar.gz -C artifacts/linux .
-          tar -czf s2t_hud_${VERSION}-windows.tar.gz -C artifacts/windows .
+          tar -czf CustomhudManager_s2t_${VERSION}-linux.tar.gz -C artifacts/linux .
+          tar -czf CustomhudManager_s2t_${VERSION}-windows.tar.gz -C artifacts/windows .
       - name: Upload release archives
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: s2t_hud_*.tar.gz
+          file: CustomhudManager_s2t_*.tar.gz
           tag: ${{ needs.version.outputs.tag }}
           file_glob: true
           overwrite: true

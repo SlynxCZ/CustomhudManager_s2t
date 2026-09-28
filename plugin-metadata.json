@@ -1,7 +1,7 @@
 {
-    "name": "s2t_hud",
-    "alias": "hud",
-    "display_name": "Source2Toolkit HUD",
+    "name": "customhud_manager",
+    "alias": "customhud",
+    "display_name": "CustomHUD Manager",
     "description": "On-screen texts, HUD elements and menus on the Panorama HUD (IToolkitHud)",
     "author": "Slynx (˙·٠● S l y n x ●٠·˙)",
     "url": "https://www.source2toolkit.net",

@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * Source2Toolkit HUD plugin (s2t_hud)
+ * CustomhudManager_s2t -- the Source2Toolkit Panorama HUD plugin
  * Copyright (C) 2025-2026 Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl
  * =============================================================================
  *
@@ -24,7 +24,7 @@
 #include <cstring>
 
 HudPlugin g_Plugin;
-TOOLKIT_EXPOSE(s2t_hud, g_Plugin);
+TOOLKIT_EXPOSE(customhud_manager, g_Plugin);
 
 bool HudPlugin::Load(PluginId id, IToolkitAPI* api, char* error, size_t maxlen, bool late)
 {
@@ -68,7 +68,7 @@ void* HudPlugin::OnToolkitQuery(const char* iface, int* ret)
     // Another revision of the same interface: say so once, so a plugin built
     // against an older or newer SDK finds out why it has no HUD.
     if (!strncmp(iface, "IToolkitHud", 11))
-        TOOLKIT_LOG(this, "A plugin asked for %s; this plugin serves %s -- rebuild the plugin or update s2t_hud.\n", iface, TOOLKIT_HUD_INTERFACE);
+        TOOLKIT_LOG(this, "A plugin asked for %s; this plugin serves %s -- rebuild the plugin or update CustomhudManager_s2t.\n", iface, TOOLKIT_HUD_INTERFACE);
 
     if (ret) *ret = TOOLKIT_IFACE_FAILED;
     return nullptr;

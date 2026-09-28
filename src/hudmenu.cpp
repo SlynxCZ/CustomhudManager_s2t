@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * Source2Toolkit HUD plugin (s2t_hud)
+ * CustomhudManager_s2t -- the Source2Toolkit Panorama HUD plugin
  * Copyright (C) 2025-2026 Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl
  * =============================================================================
  *

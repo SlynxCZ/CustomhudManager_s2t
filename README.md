@@ -1,4 +1,4 @@
-# s2t_hud
+# CustomhudManager_s2t
 
 The Panorama HUD for [Source2Toolkit](https://www.source2toolkit.net): a toolkit
 plugin that serves `IToolkitHud` -- on-screen texts in eight slots, an
@@ -11,7 +11,7 @@ have.
 
 ## Install
 
-1. Drop `addons/source2toolkit/plugins/s2t_hud.stx` from a release next to
+1. Drop `addons/source2toolkit/plugins/customhud_manager.stx` from a release next to
    the other toolkit plugins. The core loads it with the rest.
 2. Compile `panorama/` into an addon (see `panorama/README.md`) and hand it
    to the players -- a Workshop addon with MultiAddonManager, or the map's

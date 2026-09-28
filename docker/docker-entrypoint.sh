@@ -46,7 +46,7 @@ cmake .. -G Ninja \
 cmake --build . -j"$(nproc)"
 
 ### --- Package -------------------------------------------------------------
-# addons/source2toolkit/plugins/s2t_hud.stx, plus the panorama sources for
+# addons/source2toolkit/plugins/customhud_manager.stx, plus the panorama sources for
 # the client addon next to it.
 mkdir -p package
 cp -r addons package/
