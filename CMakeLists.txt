@@ -3,6 +3,11 @@ project(customhud_manager CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# The SDK library is built against the static CRT (/MT); a plugin linking the
+# dynamic one gets unresolved CRT internals (_recalloc_base from the hl2sdk's
+# memoverride.cpp). Set before the SDK is added, so both agree.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 # The SDK is resolved from the environment, the same way source2toolkit core
 # resolves it -- one checkout for the toolkit and everything built against it.
 if (DEFINED ENV{SOURCE2TOOLKIT_SDK} AND NOT "$ENV{SOURCE2TOOLKIT_SDK}" STREQUAL "")
