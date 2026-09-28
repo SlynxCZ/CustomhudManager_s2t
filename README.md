@@ -59,7 +59,8 @@ mkdir build && cd build && python ../configure.py --enable-optimize --sdks cs2 &
 ```
 
 A line appended to `pushbuild.txt` on `main` makes the CI cut the next tag
-and publish the Linux and Windows archives.
+and publish the Linux and Windows archives; the plugin reports that tag and
+the commit as its version (`toolkit list`).
 
 ## License
 

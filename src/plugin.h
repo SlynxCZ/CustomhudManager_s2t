@@ -1,7 +1,8 @@
 /**
+ * vim: set ts=4 sw=4 tw=99 noet:
  * =============================================================================
- * CustomhudManager_s2t -- the Source2Toolkit Panorama HUD plugin
- * Copyright (C) 2025-2026 Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl
+ * CustomhudManager_s2t
+ * Copyright (C) 2026 Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl.
  * =============================================================================
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -10,11 +11,25 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  * details.
  *
  * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * As a special exception, Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl gives
+ * you permission to link the code of this program (as well as its derivative
+ * works) to "Counter-Strike 2," "Source 2," "Steam," and any Game MODs or
+ * server software running on software by Valve Corporation. You must obey the
+ * GNU General Public License in all respects for all other code used.
+ *
+ * Additionally, this exception applies to all derivative works unless
+ * otherwise stated in LICENSE.txt.
+ *
+ * Authors:
+ *   - Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl
+ *
+ * Project: CustomhudManager_s2t
  */
 #pragma once
 
@@ -43,9 +58,6 @@
 #include "source2toolkit/IToolkitSounds.h"
 #include "source2toolkit/IToolkitTrace.h"
 
-// Generated from plugin-metadata.json by tools/version_gen.py.
-#include "version_gen.h"
-
 TOOLKIT_GLOBALVARS();
 
 /**
@@ -67,10 +79,10 @@ public:
     void OnLevelShutdown() override;
     void OnClientDisconnect(CPlayerSlot slot, ENetworkDisconnectionReason reason, const char* name, uint64 xuid, const char* networkId) override;
 
-    const char* GetAuthor() override { return PLUGIN_AUTHOR; }
-    const char* GetName() override { return PLUGIN_DISPLAY_NAME; }
-    const char* GetDescription() override { return PLUGIN_DESCRIPTION; }
-    const char* GetVersion() override { return PLUGIN_FULL_VERSION; }
+    const char* GetAuthor() override;
+    const char* GetName() override;
+    const char* GetDescription() override;
+    const char* GetVersion() override;
 };
 
 extern HudPlugin g_Plugin;

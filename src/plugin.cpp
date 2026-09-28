@@ -1,7 +1,8 @@
 /**
+ * vim: set ts=4 sw=4 tw=99 noet:
  * =============================================================================
- * CustomhudManager_s2t -- the Source2Toolkit Panorama HUD plugin
- * Copyright (C) 2025-2026 Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl
+ * CustomhudManager_s2t
+ * Copyright (C) 2026 Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl.
  * =============================================================================
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -10,11 +11,25 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  * details.
  *
  * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * As a special exception, Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl gives
+ * you permission to link the code of this program (as well as its derivative
+ * works) to "Counter-Strike 2," "Source 2," "Steam," and any Game MODs or
+ * server software running on software by Valve Corporation. You must obey the
+ * GNU General Public License in all respects for all other code used.
+ *
+ * Additionally, this exception applies to all derivative works unless
+ * otherwise stated in LICENSE.txt.
+ *
+ * Authors:
+ *   - Michal "Slynx (˙·٠● S l y n x ●٠·˙)" Přikryl
+ *
+ * Project: CustomhudManager_s2t
  */
 #include "plugin.h"
 
@@ -23,8 +38,11 @@
 
 #include <cstring>
 
+// The release tag and the commit, from the build (CMakeLists.txt / AMBuilder).
+#define VERSION_STRING SEMVER " @ " GITHUB_SHA
+
 HudPlugin g_Plugin;
-TOOLKIT_EXPOSE(customhud_manager, g_Plugin);
+TOOLKIT_EXPOSE(CustomhudManager, g_Plugin);
 
 bool HudPlugin::Load(PluginId id, IToolkitAPI* api, char* error, size_t maxlen, bool late)
 {
@@ -88,4 +106,24 @@ void HudPlugin::OnLevelShutdown()
 void HudPlugin::OnClientDisconnect(CPlayerSlot slot, ENetworkDisconnectionReason reason, const char* name, uint64 xuid, const char* networkId)
 {
     hud::hudManager.OnClientDisconnect(slot);
+}
+
+const char* HudPlugin::GetAuthor()
+{
+    return "Slynx (˙·٠● S l y n x ●٠·˙)";
+}
+
+const char* HudPlugin::GetName()
+{
+    return "CustomHUD Manager";
+}
+
+const char* HudPlugin::GetDescription()
+{
+    return "On-screen texts, HUD elements and menus on the Panorama HUD (IToolkitHud)";
+}
+
+const char* HudPlugin::GetVersion()
+{
+    return VERSION_STRING;
 }

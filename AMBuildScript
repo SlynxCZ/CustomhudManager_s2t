@@ -44,23 +44,6 @@ SdkHelpers = builder.Eval(os.path.join(hl2sdk_manifests, 'SdkHelpers.ambuild'), 
 # SdkHelpers is: it lives outside this plugin's source tree.
 ToolkitSdk = builder.Eval(os.path.join(toolkit_sdk_root, 'SdkPlugin.ambuild'), {})
 
-def LoadPluginMetadata():
-  path = os.path.join(builder.sourcePath, 'plugin-metadata.json')
-  with open(path, 'r', encoding='utf-8') as fp:
-    return json.load(fp)
-
-def LoadVersionGen():
-  # The same generator the CMake build runs, imported rather than shelled out to
-  # so the header text can go through builder.AddOutputFile() and a metadata
-  # edit retriggers the compile.
-  path = os.path.join(builder.sourcePath, 'tools', 'version_gen.py')
-  spec = importlib.util.spec_from_file_location('version_gen', path)
-  module = importlib.util.module_from_spec(spec)
-  spec.loader.exec_module(module)
-  return module
-
-plugin_metadata = LoadPluginMetadata()
-version_gen = LoadVersionGen()
 
 class MMSPluginConfig(object):
   def __init__(self):
@@ -68,19 +51,18 @@ class MMSPluginConfig(object):
     self.sdks = {}
     self.sdk_targets = []
     self.binaries = []
-    self.version_header_deps = []
     self.all_targets = []
     self.target_archs = set()
 
     if builder.options.plugin_name is not None:
       self.plugin_name = builder.options.plugin_name
     else:
-      self.plugin_name = plugin_metadata['name']
+      self.plugin_name = 'customhud_manager'
 
     if builder.options.plugin_alias is not None:
       self.plugin_alias = builder.options.plugin_alias
     else:
-      self.plugin_alias = plugin_metadata['alias']
+      self.plugin_alias = 'customhud'
 
     if builder.options.targets:
       target_archs = builder.options.targets.split(',')
@@ -270,19 +252,6 @@ class MMSPluginConfig(object):
     binary = cxx.Library(name)
     return binary
   
-  def generateVersioningHeader(self):
-    builder.SetBuildFolder('/')
-
-    # Metadata edits retrigger the compile through sourcedeps below.
-    builder.AddConfigureFile(os.path.join(builder.sourcePath, 'plugin-metadata.json'))
-
-    shorthash = version_gen.git_shorthash(builder.sourcePath)
-    text = version_gen.render(plugin_metadata, shorthash)
-
-    self.version_header_deps += [
-      builder.AddOutputFile(os.path.join('versioning', 'version_gen.h'), text.encode('utf-8'))
-    ]
-
   def ToolkitLibrary(self, context, compiler, name, sdk):
     binary = self.Library(compiler, name)
     cxx = binary.compiler
@@ -296,8 +265,6 @@ class MMSPluginConfig(object):
 
     SdkHelpers.configureCxx(context, binary, sdk)
 
-    cxx.cxxincludes += [os.path.join(builder.buildPath, 'versioning')]
-    cxx.sourcedeps += self.version_header_deps
 
     # Includes, defines and the SDK's own sources -- including the hl2sdk
     # translation units it owns, which is why none are listed here.
@@ -308,7 +275,6 @@ class MMSPluginConfig(object):
 MMSPlugin = MMSPluginConfig()
 MMSPlugin.detectSDKs()
 MMSPlugin.configure()
-MMSPlugin.generateVersioningHeader()
 
 BuildScripts = [
   'AMBuilder',
