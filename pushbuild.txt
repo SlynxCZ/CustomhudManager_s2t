@@ -1,1 +1,2 @@
 # One line per release: append what changed and the CI cuts the next tag.
+First release: IToolkitHud004 -- text slots, interaction prompt, toasts, announcement, countdown, big timer, status chips, corner card, progress bar, hit feedback, event feed, overlays, and HudMenu on the HUD through the core's menu system (a dead player gets the cursor). Needs source2toolkit v1.0.34; the players need the s2t_hud / s2t_menu layouts from panorama/ in an addon.
