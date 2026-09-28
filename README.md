@@ -1,7 +1,7 @@
 # CustomhudManager_s2t
 
 The Panorama HUD for [Source2Toolkit](https://www.source2toolkit.net): a toolkit
-plugin that serves `IToolkitHud` -- on-screen texts in eight slots, an
+plugin that serves `ICustomhudManager` -- on-screen texts in eight slots, an
 interaction prompt, toasts, an announcement, a countdown, a big timer, status
 chips, a corner card, a progress bar, hit feedback, an event feed, full-screen
 overlays -- and `HudMenu`, a menu drawn on the HUD through the core's menu
@@ -19,30 +19,31 @@ have.
 
 ## Use from a plugin
 
-The interface is not one of the core's, so `TOOLKIT_SAVEVARS()` leaves
-`g_pToolkitHud` null. Fetch it once every plugin is loaded and treat null as
-"no HUD":
+The interface is this plugin's, not the core's: `public/ICustomhudManager.h`
+is the header (add `public/` to your include path -- a git submodule of this
+repository is the usual way), you declare the pointer, and you fetch it once
+every plugin is loaded, treating null as "no HUD":
 
 ```cpp
-#include "source2toolkit/IToolkitHud.h"
+#include "ICustomhudManager.h"
+
+ICustomhudManager* g_pCustomhudManager = nullptr;
 
 void MyPlugin::OnAllToolkitPluginsLoaded()
 {
     int ret;
-    GET_TOOLKIT_IFACE(g_pToolkitHud, IToolkitHud, TOOLKIT_HUD_INTERFACE, ret);
+    GET_TOOLKIT_IFACE(g_pCustomhudManager, ICustomhudManager, CUSTOMHUD_MANAGER_INTERFACE_VERSION, ret);
 }
 
-if (g_pToolkitHud)
-    g_pToolkitHud->ShowText(player, HudSlot::Top, "Round starts in 5", 4.0f, { HudColor::Yellow, HudSize::Large });
+if (g_pCustomhudManager)
+    g_pCustomhudManager->ShowText(player, HudSlot::Top, "Round starts in 5", 4.0f, { HudColor::Yellow, HudSize::Large });
 ```
 
-A `HudMenu` opens with `g_pToolkitHud->OpenMenu(g_PluginID, player, &menu)`
-(`OPEN_HUD_MENU(player, &menu)`); the rows are clicked or picked with 1-9,
+A `HudMenu` opens with `g_pCustomhudManager->OpenMenu(g_PluginID, player, &menu)`; the rows are clicked or picked with 1-9,
 and a dead player gets the cursor even in the keys mode, since the slot binds
 do nothing without a pawn.
 
-`source2toolkit/IToolkitHud.h` in the SDK documents every call and the layout
-contract; the [website](https://www.source2toolkit.net/docs/panorama/hud) has
+`public/ICustomhudManager.h` documents every call and the layout contract; the [website](https://www.source2toolkit.net/docs/panorama/hud) has
 the guide.
 
 ## Build

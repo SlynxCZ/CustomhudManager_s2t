@@ -50,7 +50,7 @@
 #include "source2toolkit/IToolkitJSON.h"
 #include "source2toolkit/IToolkitMemory.h"
 #include "source2toolkit/IToolkitMenus.h"
-#include "source2toolkit/IToolkitHud.h"
+#include "ICustomhudManager.h"
 #include "source2toolkit/IToolkitModule.h"
 #include "source2toolkit/IToolkitMySQL.h"
 #include "source2toolkit/IToolkitNetworkMessages.h"
@@ -61,7 +61,7 @@
 TOOLKIT_GLOBALVARS();
 
 /**
- * The plugin that serves IToolkitHud: the on-screen texts and elements on
+ * The plugin that serves ICustomhudManager: the on-screen texts and elements on
  * the s2t_hud layout, and HudMenu on the s2t_menu layout through the core's
  * menu system. Other plugins fetch the interface with GET_TOOLKIT_IFACE in
  * OnAllToolkitPluginsLoaded().

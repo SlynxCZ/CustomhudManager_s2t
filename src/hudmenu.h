@@ -32,7 +32,7 @@
  * Project: CustomhudManager_s2t
  */
 #pragma once
-#include "source2toolkit/IToolkitHud.h"
+#include "ICustomhudManager.h"
 
 #include <cstdint>
 

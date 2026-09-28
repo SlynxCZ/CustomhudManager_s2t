@@ -49,7 +49,7 @@ namespace hud
 
     namespace
     {
-        // The id contract of IToolkitHud.h, in HudSlot order.
+        // The id contract of ICustomhudManager.h, in HudSlot order.
         constexpr const char* kSlotPanel[] = {
             "hud_top", "hud_topleft", "hud_topright", "hud_left", "hud_right", "hud_center", "hud_bottom", "hud_panel",
         };
@@ -278,7 +278,7 @@ namespace hud
         card.shown = show;
     }
 
-    // ---- IToolkitHud ---------------------------------------------------------
+    // ---- ICustomhudManager ---------------------------------------------------------
 
     bool HudManager::IsAvailable()
     {
@@ -417,7 +417,7 @@ namespace hud
         }
     }
 
-    // ---- IToolkitHud002 ------------------------------------------------------
+    // ---- ICustomhudManager002 ------------------------------------------------------
 
     void HudManager::ShowToast(CCSPlayerController* player, HudToastStyle style, const char* title, const char* text, float seconds)
     {
@@ -749,7 +749,7 @@ namespace hud
             layout->SetHasClass("hud_overlay", kShow, false, player);
     }
 
-    // ---- IToolkitHud004 ------------------------------------------------------
+    // ---- ICustomhudManager004 ------------------------------------------------------
 
     void HudManager::OpenMenu(PluginId owner, CCSPlayerController* player, HudMenu* menu)
     {

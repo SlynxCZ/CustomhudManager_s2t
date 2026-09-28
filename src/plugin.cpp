@@ -38,7 +38,6 @@
 
 #include <cstring>
 
-// The release tag and the commit, from the build (CMakeLists.txt / AMBuilder).
 #define VERSION_STRING SEMVER " @ " GITHUB_SHA
 
 HudPlugin g_Plugin;
@@ -60,7 +59,7 @@ bool HudPlugin::Load(PluginId id, IToolkitAPI* api, char* error, size_t maxlen, 
 
     hud::hudManager.Init();
 
-    TOOLKIT_LOG(this, "Serving %s.\n", TOOLKIT_HUD_INTERFACE);
+    TOOLKIT_LOG(this, "Serving %s.\n", CUSTOMHUD_MANAGER_INTERFACE_VERSION);
     return true;
 }
 
@@ -77,16 +76,16 @@ void* HudPlugin::OnToolkitQuery(const char* iface, int* ret)
     if (!iface)
         return nullptr;
 
-    if (!strcmp(iface, TOOLKIT_HUD_INTERFACE))
+    if (!strcmp(iface, CUSTOMHUD_MANAGER_INTERFACE_VERSION))
     {
         if (ret) *ret = TOOLKIT_IFACE_OK;
-        return static_cast<IToolkitHud*>(&hud::hudManager);
+        return static_cast<ICustomhudManager*>(&hud::hudManager);
     }
 
     // Another revision of the same interface: say so once, so a plugin built
     // against an older or newer SDK finds out why it has no HUD.
-    if (!strncmp(iface, "IToolkitHud", 11))
-        TOOLKIT_LOG(this, "A plugin asked for %s; this plugin serves %s -- rebuild the plugin or update CustomhudManager_s2t.\n", iface, TOOLKIT_HUD_INTERFACE);
+    if (!strncmp(iface, "ICustomhudManager", 11))
+        TOOLKIT_LOG(this, "A plugin asked for %s; this plugin serves %s -- rebuild the plugin or update CustomhudManager_s2t.\n", iface, CUSTOMHUD_MANAGER_INTERFACE_VERSION);
 
     if (ret) *ret = TOOLKIT_IFACE_FAILED;
     return nullptr;
@@ -120,7 +119,7 @@ const char* HudPlugin::GetName()
 
 const char* HudPlugin::GetDescription()
 {
-    return "On-screen texts, HUD elements and menus on the Panorama HUD (IToolkitHud)";
+    return "On-screen texts, HUD elements and menus on the Panorama HUD (ICustomhudManager)";
 }
 
 const char* HudPlugin::GetVersion()

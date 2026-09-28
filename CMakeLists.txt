@@ -55,6 +55,8 @@ add_s2toolkit_plugin(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        # ICustomhudManager.h: the interface other plugins include.
+        ${CMAKE_CURRENT_SOURCE_DIR}/public
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

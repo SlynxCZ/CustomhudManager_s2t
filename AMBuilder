@@ -18,6 +18,7 @@ for sdk_target in MMSPlugin.sdk_targets:
 
   binary.compiler.cxxincludes += [
     os.path.join(builder.sourcePath, 'src'),
+    os.path.join(builder.sourcePath, 'public'),
   ]
 
   # The version the plugin reports: the release tag and the commit.

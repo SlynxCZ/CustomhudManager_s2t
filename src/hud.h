@@ -32,7 +32,7 @@
  * Project: CustomhudManager_s2t
  */
 #pragma once
-#include "source2toolkit/IToolkitHud.h"
+#include "ICustomhudManager.h"
 
 #include "ehandle.h"
 #include "playerslot.h"
@@ -58,7 +58,7 @@ namespace hud
         std::function<void(CCSCustomHudLayout*)> onCreated;
     };
 
-    class HudManager final : public IToolkitHud
+    class HudManager final : public ICustomhudManager
     {
     public:
         static constexpr int kMaxPlayers = 64;
@@ -69,7 +69,7 @@ namespace hud
         /// How long the hit flash and its number stay.
         static constexpr float kHitSeconds = 0.9f;
 
-        // IToolkitHud
+        // ICustomhudManager
         bool IsAvailable() override;
         void ShowText(CCSPlayerController* player, HudSlot slot, const char* text, float seconds, HudTextStyle style) override;
         void HideText(CCSPlayerController* player, HudSlot slot) override;
@@ -78,7 +78,7 @@ namespace hud
         void HideAll(CCSPlayerController* player) override;
         const char* LayoutName() override;
 
-        // IToolkitHud002
+        // ICustomhudManager002
         void ShowToast(CCSPlayerController* player, HudToastStyle style, const char* title, const char* text, float seconds) override;
         void ClearToasts(CCSPlayerController* player) override;
         void ShowAnnounce(CCSPlayerController* player, const char* title, const char* subtitle, float seconds, HudColor color) override;
@@ -95,7 +95,7 @@ namespace hud
         void ShowOverlay(CCSPlayerController* player, HudOverlay overlay, const char* text, float seconds) override;
         void HideOverlay(CCSPlayerController* player) override;
 
-        // IToolkitHud004
+        // ICustomhudManager004
         void OpenMenu(PluginId owner, CCSPlayerController* player, HudMenu* menu) override;
         void ShowTimer(CCSPlayerController* player, const char* tag, const char* time, const char* sub, HudColor color) override;
         void HideTimer(CCSPlayerController* player) override;
