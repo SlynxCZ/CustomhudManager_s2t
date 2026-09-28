@@ -1,0 +1,232 @@
+<!--
+  Source2Toolkit reference HUD layout for IToolkitHud: text slots, the
+  interaction prompt, toasts, announcements, countdown, status chips, a
+  progress bar, hit feedback, an event feed and full-screen overlays.
+
+  The core addresses the panels by id; the ids are the contract (see
+  IToolkitHud.h). Positions, fonts, colours and animations are in s2t_hud.css.
+
+  Nothing here takes the mouse (hittest="false" everywhere): the player keeps
+  playing while anything is up. Every element is authored hidden and shown
+  per player with the `show` class; colours (c-*), sizes (s-*), toast styles
+  (t-*), overlays (o-*), bar fills (w0..w20) and the animation restarts
+  (in-a / in-b, pop-a / pop-b, hit-a / hit-b, dmg-a / dmg-b) come from the
+  core too.
+
+  Ids:
+    hud_top, hud_topleft, hud_topright, hud_left, hud_right, hud_center,
+    hud_bottom, hud_panel          one Panel per HudSlot (show, c-*, s-*)
+    <slot>_text                    Label {s:text}
+    hud_prompt                     the prompt (show)
+    hud_prompt_key / _text         Labels {s:text}
+    hud_prompt_barwrap / _bar      Panel (show) / Panel (w0..w20)
+    hud_toast_0 .. hud_toast_3     toast cards, newest first (show, t-*, in-a / in-b)
+    hud_toast_N_title / _text      Labels {s:text}
+    hud_announce                   big upper-centre callout (show, c-*, in-a / in-b)
+    hud_announce_title / _sub      Labels {s:text}
+    hud_countdown                  giant centre number or word (show, c-*, pop-a / pop-b)
+    hud_countdown_text             Label {s:text}
+    hud_timer                      the big timer (show, c-*, tick-a / tick-b per call, has-tag, has-sub)
+    hud_timer_tag / _num / _sub    Labels {s:text}
+    hud_card                       the corner card (show, c-*, has-tag, has-sub)
+    hud_card_tag / _title / _sub   Labels {s:text}
+    hud_status                     the chip row (show)
+    hud_status_0 .. hud_status_3   chips (show, c-*)
+    hud_status_N_label / _value    Labels {s:text}
+    hud_progress                   labelled bar under the crosshair (show, c-*)
+    hud_progress_label / _value    Labels {s:text}
+    hud_progress_bar               Panel (w0..w20)
+    hud_hitmarker                  crosshair flash (show, hit-a / hit-b, headshot, kill)
+    hud_damage                     drifting damage number (show, dmg-a / dmg-b, headshot, kill)
+    hud_damage_text                Label {s:text}
+    hud_feed                       the event rows (show)
+    hud_feed_0 .. hud_feed_4       rows, newest first (show, t-*)
+    hud_feed_N_time / _text        Labels {s:text}
+    hud_overlay                    full-screen tint (show, o-*)
+    hud_overlay_text               Label {s:text}
+-->
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/custom_game/s2t_hud.vcss_c" />
+	</styles>
+
+	<Panel class="s2t-hud-screen" hittest="false">
+
+		<!-- full-screen tints go first so everything else draws over them -->
+		<Panel id="hud_overlay" class="s2t-overlay" hittest="false">
+			<Label id="hud_overlay_text" class="s2t-overlay-text" text="{s:text}" />
+		</Panel>
+
+		<!-- ---- text slots ---- -->
+		<Panel id="hud_top" class="s2t-hud-slot s2t-hud-top" hittest="false">
+			<Label id="hud_top_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+		<Panel id="hud_topleft" class="s2t-hud-slot s2t-hud-topleft" hittest="false">
+			<Label id="hud_topleft_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+		<Panel id="hud_topright" class="s2t-hud-slot s2t-hud-topright" hittest="false">
+			<Label id="hud_topright_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+		<Panel id="hud_left" class="s2t-hud-slot s2t-hud-left" hittest="false">
+			<Label id="hud_left_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+		<Panel id="hud_right" class="s2t-hud-slot s2t-hud-right" hittest="false">
+			<Label id="hud_right_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+		<Panel id="hud_center" class="s2t-hud-slot s2t-hud-center" hittest="false">
+			<Label id="hud_center_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+		<Panel id="hud_bottom" class="s2t-hud-slot s2t-hud-bottom" hittest="false">
+			<Label id="hud_bottom_text" class="s2t-hud-text" text="{s:text}" />
+		</Panel>
+
+		<Panel id="hud_panel" class="s2t-hud-slot s2t-hud-panel" hittest="false">
+			<Label id="hud_panel_text" class="s2t-hud-text s2t-hud-panel-text" text="{s:text}" />
+		</Panel>
+
+		<!-- ---- status chips: top centre, under the round timer ---- -->
+		<Panel id="hud_status" class="s2t-status" hittest="false">
+			<Panel id="hud_status_0" class="s2t-chip" hittest="false">
+				<Label id="hud_status_0_label" class="s2t-chip-label" text="{s:text}" />
+				<Label id="hud_status_0_value" class="s2t-chip-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_status_1" class="s2t-chip" hittest="false">
+				<Label id="hud_status_1_label" class="s2t-chip-label" text="{s:text}" />
+				<Label id="hud_status_1_value" class="s2t-chip-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_status_2" class="s2t-chip" hittest="false">
+				<Label id="hud_status_2_label" class="s2t-chip-label" text="{s:text}" />
+				<Label id="hud_status_2_value" class="s2t-chip-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_status_3" class="s2t-chip" hittest="false">
+				<Label id="hud_status_3_label" class="s2t-chip-label" text="{s:text}" />
+				<Label id="hud_status_3_value" class="s2t-chip-value" text="{s:text}" />
+			</Panel>
+		</Panel>
+
+		<!-- ---- announcement: big, upper centre ---- -->
+		<Panel id="hud_announce" class="s2t-announce" hittest="false">
+			<Label id="hud_announce_title" class="s2t-announce-title" text="{s:text}" />
+			<Label id="hud_announce_sub" class="s2t-announce-sub" text="{s:text}" />
+		</Panel>
+
+		<!-- ---- countdown: giant, centre ---- -->
+		<Panel id="hud_countdown" class="s2t-countdown" hittest="false">
+			<Label id="hud_countdown_text" class="s2t-countdown-text" text="{s:text}" />
+		</Panel>
+
+		<!-- ---- timer: the big time with a halo, centre (ShowTimer) ---- -->
+		<Panel id="hud_timer" class="s2t-timer" hittest="false">
+			<Panel class="s2t-timer-pill" hittest="false">
+				<Panel class="s2t-timer-pill-dot" hittest="false" />
+				<Label id="hud_timer_tag" class="s2t-timer-pill-text" text="{s:text}" />
+			</Panel>
+			<Panel class="s2t-timer-halo" hittest="false">
+				<Label id="hud_timer_num" class="s2t-timer-num" text="{s:text}" />
+			</Panel>
+			<Label id="hud_timer_sub" class="s2t-timer-sub" text="{s:text}" />
+		</Panel>
+
+		<!-- ---- card: tag, title and subtitle in the top left corner (ShowCard) ---- -->
+		<Panel id="hud_card" class="s2t-card" hittest="false">
+			<Panel class="s2t-card-edge" hittest="false" />
+			<Panel class="s2t-card-body" hittest="false">
+				<Label id="hud_card_tag" class="s2t-card-tag" text="{s:text}" />
+				<Label id="hud_card_title" class="s2t-card-title" text="{s:text}" />
+				<Label id="hud_card_sub" class="s2t-card-sub" text="{s:text}" />
+			</Panel>
+		</Panel>
+
+		<!-- ---- progress: labelled bar under the crosshair ---- -->
+		<Panel id="hud_progress" class="s2t-progress" hittest="false">
+			<Panel class="s2t-progress-row" hittest="false">
+				<Label id="hud_progress_label" class="s2t-progress-label" text="{s:text}" />
+				<Label id="hud_progress_value" class="s2t-progress-value" text="{s:text}" />
+			</Panel>
+			<Panel class="s2t-progress-track" hittest="false">
+				<Panel id="hud_progress_bar" class="s2t-progress-bar" hittest="false" />
+			</Panel>
+		</Panel>
+
+		<!-- ---- hit feedback: a flash on the crosshair and a number drifting up ---- -->
+		<Panel id="hud_hitmarker" class="s2t-hit" hittest="false">
+			<Panel class="s2t-hit-tick s2t-hit-tl" hittest="false" />
+			<Panel class="s2t-hit-tick s2t-hit-tr" hittest="false" />
+			<Panel class="s2t-hit-tick s2t-hit-bl" hittest="false" />
+			<Panel class="s2t-hit-tick s2t-hit-br" hittest="false" />
+		</Panel>
+		<Panel id="hud_damage" class="s2t-damage" hittest="false">
+			<Label id="hud_damage_text" class="s2t-damage-text" text="{s:text}" />
+		</Panel>
+
+		<!-- ---- interaction prompt ---- -->
+		<Panel id="hud_prompt" class="s2t-prompt" hittest="false">
+			<Panel class="s2t-prompt-row" hittest="false">
+				<Panel class="s2t-prompt-keycap" hittest="false">
+					<Label id="hud_prompt_key" class="s2t-prompt-key" text="{s:text}" />
+				</Panel>
+				<Label id="hud_prompt_text" class="s2t-prompt-text" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_prompt_barwrap" class="s2t-prompt-barwrap" hittest="false">
+				<Panel id="hud_prompt_bar" class="s2t-prompt-bar" hittest="false" />
+			</Panel>
+		</Panel>
+
+		<!-- ---- toasts: top right, newest first ---- -->
+		<Panel class="s2t-toasts" hittest="false">
+			<Panel id="hud_toast_0" class="s2t-toast" hittest="false">
+				<Panel class="s2t-toast-edge" hittest="false" />
+				<Panel class="s2t-toast-body" hittest="false">
+					<Label id="hud_toast_0_title" class="s2t-toast-title" text="{s:text}" />
+					<Label id="hud_toast_0_text" class="s2t-toast-text" text="{s:text}" />
+				</Panel>
+			</Panel>
+			<Panel id="hud_toast_1" class="s2t-toast" hittest="false">
+				<Panel class="s2t-toast-edge" hittest="false" />
+				<Panel class="s2t-toast-body" hittest="false">
+					<Label id="hud_toast_1_title" class="s2t-toast-title" text="{s:text}" />
+					<Label id="hud_toast_1_text" class="s2t-toast-text" text="{s:text}" />
+				</Panel>
+			</Panel>
+			<Panel id="hud_toast_2" class="s2t-toast" hittest="false">
+				<Panel class="s2t-toast-edge" hittest="false" />
+				<Panel class="s2t-toast-body" hittest="false">
+					<Label id="hud_toast_2_title" class="s2t-toast-title" text="{s:text}" />
+					<Label id="hud_toast_2_text" class="s2t-toast-text" text="{s:text}" />
+				</Panel>
+			</Panel>
+			<Panel id="hud_toast_3" class="s2t-toast" hittest="false">
+				<Panel class="s2t-toast-edge" hittest="false" />
+				<Panel class="s2t-toast-body" hittest="false">
+					<Label id="hud_toast_3_title" class="s2t-toast-title" text="{s:text}" />
+					<Label id="hud_toast_3_text" class="s2t-toast-text" text="{s:text}" />
+				</Panel>
+			</Panel>
+		</Panel>
+
+		<!-- ---- event feed: top left, newest first ---- -->
+		<Panel id="hud_feed" class="s2t-feed" hittest="false">
+			<Panel id="hud_feed_0" class="s2t-feed-row" hittest="false">
+				<Label id="hud_feed_0_time" class="s2t-feed-time" text="{s:text}" />
+				<Label id="hud_feed_0_text" class="s2t-feed-text" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_feed_1" class="s2t-feed-row" hittest="false">
+				<Label id="hud_feed_1_time" class="s2t-feed-time" text="{s:text}" />
+				<Label id="hud_feed_1_text" class="s2t-feed-text" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_feed_2" class="s2t-feed-row" hittest="false">
+				<Label id="hud_feed_2_time" class="s2t-feed-time" text="{s:text}" />
+				<Label id="hud_feed_2_text" class="s2t-feed-text" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_feed_3" class="s2t-feed-row" hittest="false">
+				<Label id="hud_feed_3_time" class="s2t-feed-time" text="{s:text}" />
+				<Label id="hud_feed_3_text" class="s2t-feed-text" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_feed_4" class="s2t-feed-row" hittest="false">
+				<Label id="hud_feed_4_time" class="s2t-feed-time" text="{s:text}" />
+				<Label id="hud_feed_4_text" class="s2t-feed-text" text="{s:text}" />
+			</Panel>
+		</Panel>
+
+	</Panel>
+</root>

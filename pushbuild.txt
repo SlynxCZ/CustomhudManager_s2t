@@ -1,0 +1,1 @@
+# One line per release: append what changed and the CI cuts the next tag.

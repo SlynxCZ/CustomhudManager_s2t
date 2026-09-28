@@ -1,0 +1,240 @@
+/*
+  Source2Toolkit reference stylesheet for s2t_menu.xml.
+
+  Panorama CSS, not web CSS: no display/flex/grid (flow-children instead),
+  colours as #rrggbb / #rrggbbaa only, visibility: collapse for hidden. See
+  the toolkit docs, "Authoring layouts", for the list of what works.
+
+  The core toggles these classes: show (menu_dim, menu_root, rows, nav
+  buttons, footer) and disabled (rows). Everything else is free to change.
+*/
+
+.s2t-menu-screen {
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+}
+
+/* ---- backdrop -------------------------------------------------------------- */
+
+.s2t-menu-dim {
+    width: 100%;
+    height: 100%;
+    background-color: #00000073;
+    visibility: collapse;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out 0s;
+}
+
+.s2t-menu-dim.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ---- window: left of the screen, centred vertically, so the crosshair stays free ---- */
+
+.s2t-menu {
+    visibility: collapse;
+    flow-children: down;
+    horizontal-align: left;
+    vertical-align: center;
+    margin-left: 48px;
+    width: 480px;
+    padding: 20px 24px 16px 24px;
+    background-color: #0d1117f2;
+    border: 1px solid #ffffff1c;
+    border-radius: 12px;
+    box-shadow: #000000b0 0px 16px 48px 0px;
+    opacity: 0;
+    transform: translateX(-14px);
+    transition: opacity 0.15s ease-out 0s, transform 0.15s ease-out 0s;
+}
+
+.s2t-menu.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+/* Where the window sits: the core puts one of these on menu_root (HudMenu::Position). */
+
+.s2t-menu.pos-left {
+    horizontal-align: left;
+    margin-left: 48px;
+    margin-right: 0px;
+}
+
+.s2t-menu.pos-center {
+    horizontal-align: center;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.s2t-menu.pos-right {
+    horizontal-align: right;
+    margin-left: 0px;
+    margin-right: 48px;
+}
+
+/* ---- title ----------------------------------------------------------------- */
+
+.s2t-menu-header {
+    flow-children: down;
+    width: 100%;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ffffff14;
+}
+
+.s2t-menu-title {
+    font-family: Stratum2;
+    font-weight: bold;
+    font-size: 26px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #f0a020;
+    text-overflow: shrink;
+    width: 100%;
+}
+
+/* ---- rows ------------------------------------------------------------------ */
+
+.s2t-menu-rows {
+    flow-children: down;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.s2t-menu-row {
+    flow-children: right;
+    width: 100%;
+    height: 42px;
+    margin-bottom: 6px;
+    padding: 0px 12px;
+    background-color: #ffffff0a;
+    border-left: 3px solid #ffffff22;
+    border-radius: 6px;
+    visibility: collapse;
+    transition: background-color 0.08s ease-in-out 0s, border-left 0.08s ease-in-out 0s;
+}
+
+.s2t-menu-row.show {
+    visibility: visible;
+}
+
+.s2t-menu-row:hover {
+    background-color: #ffffff1f;
+    border-left: 3px solid #f0a020;
+}
+
+.s2t-menu-row:active {
+    background-color: #ffffff30;
+}
+
+.s2t-menu-row.disabled {
+    opacity: 0.4;
+}
+
+.s2t-menu-row.disabled:hover {
+    background-color: #ffffff0a;
+    border-left: 3px solid #ffffff22;
+}
+
+.s2t-menu-key {
+    width: 28px;
+    height: 28px;
+    vertical-align: center;
+    text-align: center;
+    font-family: Stratum2;
+    font-weight: bold;
+    font-size: 16px;
+    color: #0d1117;
+    background-color: #f0a020;
+    border-radius: 5px;
+    margin-right: 14px;
+}
+
+.s2t-menu-text {
+    width: fill-parent-flow(1.0);
+    vertical-align: center;
+    font-family: Stratum2;
+    font-size: 21px;
+    color: #ffffff;
+    text-overflow: shrink;
+}
+
+/* ---- navigation ------------------------------------------------------------ */
+
+.s2t-menu-nav {
+    flow-children: right;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.s2t-menu-nav-btn {
+    flow-children: right;
+    height: 34px;
+    padding: 0px 12px;
+    margin-right: 8px;
+    background-color: #ffffff0a;
+    border-radius: 6px;
+    visibility: collapse;
+    transition: background-color 0.08s ease-in-out 0s;
+}
+
+.s2t-menu-nav-btn.show {
+    visibility: visible;
+}
+
+.s2t-menu-nav-btn:hover {
+    background-color: #ffffff1f;
+}
+
+.s2t-menu-nav-btn:active {
+    background-color: #ffffff30;
+}
+
+.s2t-menu-close {
+    horizontal-align: right;
+    margin-right: 0px;
+}
+
+.s2t-menu-nav-key {
+    width: 22px;
+    height: 22px;
+    vertical-align: center;
+    text-align: center;
+    font-family: Stratum2;
+    font-weight: bold;
+    font-size: 13px;
+    color: #0d1117;
+    background-color: #9aa3ad;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.s2t-menu-close .s2t-menu-nav-key {
+    background-color: #e0503c;
+    color: #ffffff;
+}
+
+.s2t-menu-nav-text {
+    vertical-align: center;
+    font-family: Stratum2;
+    font-size: 16px;
+    color: #dfe4ea;
+}
+
+/* ---- footer ---------------------------------------------------------------- */
+
+.s2t-menu-footer {
+    margin-top: 8px;
+    horizontal-align: right;
+    font-family: Stratum2;
+    font-size: 13px;
+    color: #8a929c;
+    visibility: collapse;
+}
+
+.s2t-menu-footer.show {
+    visibility: visible;
+}

@@ -1,0 +1,89 @@
+<!--
+  Source2Toolkit reference menu layout for IToolkitMenus::OpenHudMenu.
+
+  The core addresses the panels by id; the ids below are the contract and
+  must stay as they are. Everything visual is in s2t_menu.css, which is yours
+  to change.
+
+  Rules of custom_hud_layout that shaped this file:
+    - the outermost Panel cannot have an id, so the real root is menu_root;
+    - only Panel, Label, Image and Button are accepted, no scripts, no
+      inline style;
+    - the menu is authored hidden (visibility: collapse in the stylesheet)
+      and the core shows it per player with the `show` class;
+    - menu_dim catches the mouse (hittest="true") so a click next to the menu
+      does not fall through to whatever is underneath.
+
+  Ids:
+    menu_dim                 backdrop (show)
+    menu_root                the window (show)
+    menu_title               Label {s:text}
+    menu_row_0 .. menu_row_5 Button (show, disabled); click = option
+    menu_row_N_key           Label {s:text}: the number key
+    menu_row_N_text          Label {s:text}: the option
+    menu_prev / menu_next / menu_close   Button (show)
+    menu_prev_text / menu_next_text / menu_close_text   Label {s:text}
+    menu_footer              Label {s:text}: "page / pages" (show)
+-->
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/custom_game/s2t_menu.vcss_c" />
+	</styles>
+
+	<Panel class="s2t-menu-screen" hittest="false">
+
+		<Panel id="menu_dim" class="s2t-menu-dim" hittest="true" />
+
+		<Panel id="menu_root" class="s2t-menu" hittest="true">
+
+			<Panel class="s2t-menu-header" hittest="false">
+				<Label id="menu_title" class="s2t-menu-title" text="{s:text}" />
+			</Panel>
+
+			<Panel class="s2t-menu-rows" hittest="true">
+				<Button id="menu_row_0" class="s2t-menu-row">
+					<Label id="menu_row_0_key" class="s2t-menu-key" text="{s:text}" />
+					<Label id="menu_row_0_text" class="s2t-menu-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_row_1" class="s2t-menu-row">
+					<Label id="menu_row_1_key" class="s2t-menu-key" text="{s:text}" />
+					<Label id="menu_row_1_text" class="s2t-menu-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_row_2" class="s2t-menu-row">
+					<Label id="menu_row_2_key" class="s2t-menu-key" text="{s:text}" />
+					<Label id="menu_row_2_text" class="s2t-menu-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_row_3" class="s2t-menu-row">
+					<Label id="menu_row_3_key" class="s2t-menu-key" text="{s:text}" />
+					<Label id="menu_row_3_text" class="s2t-menu-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_row_4" class="s2t-menu-row">
+					<Label id="menu_row_4_key" class="s2t-menu-key" text="{s:text}" />
+					<Label id="menu_row_4_text" class="s2t-menu-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_row_5" class="s2t-menu-row">
+					<Label id="menu_row_5_key" class="s2t-menu-key" text="{s:text}" />
+					<Label id="menu_row_5_text" class="s2t-menu-text" text="{s:text}" />
+				</Button>
+			</Panel>
+
+			<Panel class="s2t-menu-nav" hittest="true">
+				<Button id="menu_prev" class="s2t-menu-nav-btn">
+					<Label class="s2t-menu-nav-key" text="7" />
+					<Label id="menu_prev_text" class="s2t-menu-nav-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_next" class="s2t-menu-nav-btn">
+					<Label class="s2t-menu-nav-key" text="8" />
+					<Label id="menu_next_text" class="s2t-menu-nav-text" text="{s:text}" />
+				</Button>
+				<Button id="menu_close" class="s2t-menu-nav-btn s2t-menu-close">
+					<Label class="s2t-menu-nav-key" text="9" />
+					<Label id="menu_close_text" class="s2t-menu-nav-text" text="{s:text}" />
+				</Button>
+			</Panel>
+
+			<Label id="menu_footer" class="s2t-menu-footer" text="{s:text}" />
+
+		</Panel>
+	</Panel>
+</root>

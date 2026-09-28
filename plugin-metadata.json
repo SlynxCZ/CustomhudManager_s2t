@@ -1,0 +1,11 @@
+{
+    "name": "s2t_hud",
+    "alias": "hud",
+    "display_name": "Source2Toolkit HUD",
+    "description": "On-screen texts, HUD elements and menus on the Panorama HUD (IToolkitHud)",
+    "author": "Slynx (˙·٠● S l y n x ●٠·˙)",
+    "url": "https://www.source2toolkit.net",
+    "log_tag": "HUD",
+    "license": "GPLv3",
+    "version": "1.0.0.{{git-shorthash}}"
+}

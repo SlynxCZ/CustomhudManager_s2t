@@ -1,0 +1,34 @@
+# vim: set sts=2 ts=8 sw=2 tw=99 et ft=python:
+import os
+
+# Only one SDK is built at a time -- metamod can only load one binary per vdf,
+# and a toolkit plugin is loaded by name out of addons/source2toolkit/plugins,
+# which has the same constraint.
+for sdk_target in MMSPlugin.sdk_targets:
+  sdk = sdk_target.sdk
+  cxx = sdk_target.cxx
+
+  binary = MMSPlugin.ToolkitLibrary(builder, cxx, MMSPlugin.plugin_name, sdk)
+
+  binary.sources += [
+    os.path.join('src', 'plugin.cpp'),
+    os.path.join('src', 'hud.cpp'),
+    os.path.join('src', 'hudmenu.cpp'),
+  ]
+
+  binary.compiler.cxxincludes += [
+    os.path.join(builder.sourcePath, 'src'),
+  ]
+
+  binary.custom = [builder.tools.Protoc(protoc = sdk_target.protoc,
+                                        sources = ToolkitSdk.ProtoSources())]
+
+  # Export only CreateInterface -- the toolkit finds the plugin through it, and
+  # nothing else should leak out of the binary.
+  if cxx.target.platform == 'linux':
+    binary.compiler.linkflags += [
+      '-Wl,--version-script=' + os.path.join(builder.currentSourcePath, 'ExportMap')
+    ]
+
+  nodes = builder.Add(binary)
+  MMSPlugin.binaries += [nodes]

@@ -1,0 +1,156 @@
+name: Continuous Integration
+
+# Three ways in: push a tag (releases that tag), change pushbuild.txt on main
+# (the version job picks the next v* tag and the release job creates it once
+# the builds pass), or run it by hand (a build check, no release).
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+      build: ${{ steps.resolve.outputs.build }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Decide what this run is
+        id: resolve
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          case "$GITHUB_REF" in
+            refs/tags/*)
+              echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+              echo "build=true" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -n "${BEFORE:-}" ] && git rev-parse -q --verify "$BEFORE^{commit}" >/dev/null; then
+            changed="$(git diff --name-only --diff-filter=M "$BEFORE" "$GITHUB_SHA")"
+          else
+            changed="$(git show --pretty= --name-only --diff-filter=M "$GITHUB_SHA")"
+          fi
+          if ! printf '%s\n' "$changed" | grep -qx 'pushbuild.txt'; then
+            echo "pushbuild.txt untouched -- nothing to build."
+            exit 0
+          fi
+          latest="$(git tag --list 'v*' --sort=-v:refname | head -n1)"
+          if [ -z "$latest" ]; then next="v1.0.0"; else next="${latest%.*}.$(( ${latest##*.} + 1 ))"; fi
+          while git rev-parse -q --verify "refs/tags/$next" >/dev/null; do
+            next="${next%.*}.$(( ${next##*.} + 1 ))"
+          done
+          echo "tag=$next" >> "$GITHUB_OUTPUT"
+          echo "build=true" >> "$GITHUB_OUTPUT"
+
+  build-linux:
+    name: Build on Linux (clang-18)
+    runs-on: ubuntu-latest
+    needs: version
+    if: needs.version.outputs.build == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build inside the steamrt container
+        env:
+          SEMVER: ${{ needs.version.outputs.tag }}
+        run: docker compose -f docker/docker-compose.yml up --build --abort-on-container-exit
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2t_hud-linux
+          path: build/package
+          if-no-files-found: error
+
+  build-windows:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+    needs: version
+    if: needs.version.outputs.build == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Build
+        shell: pwsh
+        env:
+          SEMVER: ${{ needs.version.outputs.tag }}
+        run: .\scripts\windows-entrypoint.ps1
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2t_hud-windows
+          path: build/package
+          if-no-files-found: error
+
+  release:
+    name: Release
+    if: needs.version.outputs.tag != ''
+    needs: [version, build-linux, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Create the tag
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        env:
+          TAG: ${{ needs.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "$TAG"
+          git push origin "refs/tags/$TAG"
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: s2t_hud-linux
+          path: ./artifacts/linux
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: s2t_hud-windows
+          path: ./artifacts/windows
+      - name: Create archives
+        env:
+          VERSION: ${{ needs.version.outputs.tag }}
+        run: |
+          tar -czf s2t_hud_${VERSION}-linux.tar.gz -C artifacts/linux .
+          tar -czf s2t_hud_${VERSION}-windows.tar.gz -C artifacts/windows .
+      - name: Upload release archives
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: s2t_hud_*.tar.gz
+          tag: ${{ needs.version.outputs.tag }}
+          file_glob: true
+          overwrite: true
+          release_name: "${{ needs.version.outputs.tag }}"
