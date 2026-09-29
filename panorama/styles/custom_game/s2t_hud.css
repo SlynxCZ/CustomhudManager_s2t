@@ -392,13 +392,13 @@
 }
 
 .s2t-announce.in-a {
-    animation-name: 's2t-fade-in-a';
+    animation-name: s2t-fade-in-a;
     animation-duration: 0.25s;
     animation-timing-function: ease-out;
 }
 
 .s2t-announce.in-b {
-    animation-name: 's2t-fade-in-b';
+    animation-name: s2t-fade-in-b;
     animation-duration: 0.25s;
     animation-timing-function: ease-out;
 }
@@ -461,13 +461,13 @@
 }
 
 .s2t-countdown.pop-a .s2t-countdown-text {
-    animation-name: 's2t-fade-in-a';
+    animation-name: s2t-fade-in-a;
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
 }
 
 .s2t-countdown.pop-b .s2t-countdown-text {
-    animation-name: 's2t-fade-in-b';
+    animation-name: s2t-fade-in-b;
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
 }
@@ -576,13 +576,13 @@
 
 /* each call pulses the number; two class names used alternately restart it */
 .s2t-timer.tick-a .s2t-timer-num {
-    animation-name: 's2t-fade-in-a';
+    animation-name: s2t-fade-in-a;
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
 }
 
 .s2t-timer.tick-b .s2t-timer-num {
-    animation-name: 's2t-fade-in-b';
+    animation-name: s2t-fade-in-b;
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
 }
@@ -628,16 +628,15 @@
 .s2t-timer.c-grey .s2t-timer-pill-dot { background-color: #a0a8b0; box-shadow: #a0a8b0aa 0px 0px 6px 0px; }
 .s2t-timer.c-grey .s2t-timer-pill-text { color: #a0a8b0; }
 
-/* ---- card: tag, title and subtitle in the top left corner (ShowCard) -------- */
+/* ---- card: tag, title and subtitle in the top right corner (ShowCard) -------- */
 
 .s2t-card {
     flow-children: right;
-    /* the right edge just above the middle: the radar (top left, any size), the
-       killfeed and the toasts (top right) and the weapons (bottom right) all
-       stay clear */
+    /* the top right corner, clear of the radar (top left, any size); the
+       toasts start below it */
     horizontal-align: right;
-    vertical-align: center;
-    margin-bottom: 120px;
+    vertical-align: top;
+    margin-top: 12px;
     margin-right: 16px;
     width: 280px;
     background-color: #0d1117cc;
@@ -745,8 +744,8 @@
     opacity: 1;
 }
 
-.s2t-reveal.in-a { animation-name: 's2t-fade-in-a'; animation-duration: 0.3s; animation-timing-function: ease-out; }
-.s2t-reveal.in-b { animation-name: 's2t-fade-in-b'; animation-duration: 0.3s; animation-timing-function: ease-out; }
+.s2t-reveal.in-a { animation-name: s2t-fade-in-a; animation-duration: 0.3s; animation-timing-function: ease-out; }
+.s2t-reveal.in-b { animation-name: s2t-fade-in-b; animation-duration: 0.3s; animation-timing-function: ease-out; }
 
 .s2t-reveal-tag {
     horizontal-align: center;
@@ -1389,14 +1388,14 @@
    does not run the marker simply stays until the server hides it. */
 
 .s2t-hit.hit-a {
-    animation-name: 's2t-flash-a';
+    animation-name: s2t-flash-a;
     animation-duration: 0.35s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
 }
 
 .s2t-hit.hit-b {
-    animation-name: 's2t-flash-b';
+    animation-name: s2t-flash-b;
     animation-duration: 0.35s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
@@ -1432,14 +1431,14 @@
 }
 
 .s2t-damage.dmg-a {
-    animation-name: 's2t-flash-a';
+    animation-name: s2t-flash-a;
     animation-duration: 0.8s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
 }
 
 .s2t-damage.dmg-b {
-    animation-name: 's2t-flash-b';
+    animation-name: s2t-flash-b;
     animation-duration: 0.8s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
@@ -1484,13 +1483,13 @@
 }
 
 .s2t-toast.in-a {
-    animation-name: 's2t-fade-in-a';
+    animation-name: s2t-fade-in-a;
     animation-duration: 0.25s;
     animation-timing-function: ease-out;
 }
 
 .s2t-toast.in-b {
-    animation-name: 's2t-fade-in-b';
+    animation-name: s2t-fade-in-b;
     animation-duration: 0.25s;
     animation-timing-function: ease-out;
 }

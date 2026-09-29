@@ -137,7 +137,7 @@
 			<Label id="hud_timer_sub" class="s2t-timer-sub" text="{s:text}" />
 		</Panel>
 
-		<!-- ---- card: tag, title and subtitle in the top left corner (ShowCard) ---- -->
+		<!-- ---- card: tag, title and subtitle in the top right corner (ShowCard) ---- -->
 		<Panel id="hud_card" class="s2t-card" hittest="false">
 			<Panel class="s2t-card-edge" hittest="false" />
 			<Panel class="s2t-card-body" hittest="false">
