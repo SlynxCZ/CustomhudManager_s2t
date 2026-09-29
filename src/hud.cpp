@@ -61,7 +61,7 @@ namespace hud
         };
 
         constexpr const char* kColorClass[] = {
-            "c-white", "c-red", "c-green", "c-blue", "c-yellow", "c-orange", "c-purple", "c-cyan", "c-grey",
+            "c-white", "c-red", "c-green", "c-blue", "c-yellow", "c-orange", "c-purple", "c-cyan", "c-grey", "c-gold",
         };
         static_assert(sizeof(kColorClass) / sizeof(kColorClass[0]) == static_cast<size_t>(HudColor::Count));
 

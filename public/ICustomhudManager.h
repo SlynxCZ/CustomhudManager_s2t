@@ -149,6 +149,7 @@ enum class HudColor : int
     Purple,
     Cyan,
     Grey,
+    Gold,       ///< appended: a plugin older than this header draws it white
 
     Count
 };

@@ -191,6 +191,7 @@
 .s2t-hud-slot.c-green .s2t-hud-text { color: #4dff6a; }
 .s2t-hud-slot.c-blue .s2t-hud-text { color: #4da6ff; }
 .s2t-hud-slot.c-yellow .s2t-hud-text { color: #ffe14d; }
+.s2t-hud-slot.c-gold .s2t-hud-text { color: #ffc53d; }
 .s2t-hud-slot.c-orange .s2t-hud-text { color: #ff9a2e; }
 .s2t-hud-slot.c-purple .s2t-hud-text { color: #c77dff; }
 .s2t-hud-slot.c-cyan .s2t-hud-text { color: #4df2ff; }
@@ -358,7 +359,9 @@
 .s2t-chip.c-blue { border-left: 3px solid #4da6ff; }
 .s2t-chip.c-blue .s2t-chip-value { color: #4da6ff; }
 .s2t-chip.c-yellow { border-left: 3px solid #ffe14d; }
+.s2t-chip.c-gold { border-left: 3px solid #ffc53d; }
 .s2t-chip.c-yellow .s2t-chip-value { color: #ffe14d; }
+.s2t-chip.c-gold .s2t-chip-value { color: #ffc53d; }
 .s2t-chip.c-orange { border-left: 3px solid #ff9a2e; }
 .s2t-chip.c-orange .s2t-chip-value { color: #ff9a2e; }
 .s2t-chip.c-purple { border-left: 3px solid #c77dff; }
@@ -429,7 +432,9 @@
 .s2t-announce.c-blue { border-top: 2px solid #4da6ff; border-bottom: 2px solid #4da6ff; }
 .s2t-announce.c-blue .s2t-announce-title { color: #4da6ff; }
 .s2t-announce.c-yellow { border-top: 2px solid #ffe14d; border-bottom: 2px solid #ffe14d; }
+.s2t-announce.c-gold { border-top: 2px solid #ffc53d; border-bottom: 2px solid #ffc53d; }
 .s2t-announce.c-yellow .s2t-announce-title { color: #ffe14d; }
+.s2t-announce.c-gold .s2t-announce-title { color: #ffc53d; }
 .s2t-announce.c-orange { border-top: 2px solid #ff9a2e; border-bottom: 2px solid #ff9a2e; }
 .s2t-announce.c-orange .s2t-announce-title { color: #ff9a2e; }
 .s2t-announce.c-purple { border-top: 2px solid #c77dff; border-bottom: 2px solid #c77dff; }
@@ -481,6 +486,7 @@
 .s2t-countdown.c-green .s2t-countdown-text { color: #4dff6a; }
 .s2t-countdown.c-blue .s2t-countdown-text { color: #4da6ff; }
 .s2t-countdown.c-yellow .s2t-countdown-text { color: #ffe14d; }
+.s2t-countdown.c-gold .s2t-countdown-text { color: #ffc53d; }
 .s2t-countdown.c-orange .s2t-countdown-text { color: #ff9a2e; }
 .s2t-countdown.c-purple .s2t-countdown-text { color: #c77dff; }
 .s2t-countdown.c-cyan .s2t-countdown-text { color: #4df2ff; }
@@ -598,9 +604,13 @@
 .s2t-timer.c-blue .s2t-timer-pill-dot { background-color: #4da6ff; box-shadow: #4da6ffaa 0px 0px 6px 0px; }
 .s2t-timer.c-blue .s2t-timer-pill-text { color: #4da6ff; }
 .s2t-timer.c-yellow .s2t-timer-num { color: #ffe14d; }
+.s2t-timer.c-gold .s2t-timer-num { color: #ffc53d; }
 .s2t-timer.c-yellow .s2t-timer-pill { border: 1px solid #ffe14d66; background-color: #ffe14d1f; }
+.s2t-timer.c-gold .s2t-timer-pill { border: 1px solid #ffc53d66; background-color: #ffc53d1f; }
 .s2t-timer.c-yellow .s2t-timer-pill-dot { background-color: #ffe14d; box-shadow: #ffe14daa 0px 0px 6px 0px; }
+.s2t-timer.c-gold .s2t-timer-pill-dot { background-color: #ffc53d; box-shadow: #ffc53daa 0px 0px 6px 0px; }
 .s2t-timer.c-yellow .s2t-timer-pill-text { color: #ffe14d; }
+.s2t-timer.c-gold .s2t-timer-pill-text { color: #ffc53d; }
 .s2t-timer.c-orange .s2t-timer-num { color: #ff9a2e; }
 .s2t-timer.c-orange .s2t-timer-pill { border: 1px solid #ff9a2e66; background-color: #ff9a2e1f; }
 .s2t-timer.c-orange .s2t-timer-pill-dot { background-color: #ff9a2e; box-shadow: #ff9a2eaa 0px 0px 6px 0px; }
@@ -698,7 +708,9 @@
 .s2t-card.c-blue .s2t-card-edge { background-color: #4da6ff; }
 .s2t-card.c-blue .s2t-card-tag { color: #4da6ff; }
 .s2t-card.c-yellow .s2t-card-edge { background-color: #ffe14d; }
+.s2t-card.c-gold .s2t-card-edge { background-color: #ffc53d; }
 .s2t-card.c-yellow .s2t-card-tag { color: #ffe14d; }
+.s2t-card.c-gold .s2t-card-tag { color: #ffc53d; }
 .s2t-card.c-orange .s2t-card-edge { background-color: #ff9a2e; }
 .s2t-card.c-orange .s2t-card-tag { color: #ff9a2e; }
 .s2t-card.c-purple .s2t-card-edge { background-color: #c77dff; }
@@ -767,6 +779,7 @@
 .s2t-progress.c-green .s2t-progress-bar { background-color: #4dff6a; }
 .s2t-progress.c-blue .s2t-progress-bar { background-color: #4da6ff; }
 .s2t-progress.c-yellow .s2t-progress-bar { background-color: #ffe14d; }
+.s2t-progress.c-gold .s2t-progress-bar { background-color: #ffc53d; }
 .s2t-progress.c-orange .s2t-progress-bar { background-color: #ff9a2e; }
 .s2t-progress.c-purple .s2t-progress-bar { background-color: #c77dff; }
 .s2t-progress.c-cyan .s2t-progress-bar { background-color: #4df2ff; }
