@@ -116,6 +116,10 @@
  *   hud_stats_row_0 .. _4        rows (`show`, c-* for the value)
  *   hud_stats_row_N_label, _value  Labels text="{s:text}"
  *   hud_stats_barwrap            Panel (`show`, c-*), hud_stats_bar inside with w0 .. w20
+ *   hud_tracker                  the tracker (`show`, c-*, has-tag, has-footer)
+ *   hud_tracker_title, _tag, _footer   Labels text="{s:text}"
+ *   hud_tracker_row_0 .. _3      rows (`show`, done, has-sub, has-bar) with _title / _sub /
+ *                                _value Labels and _bar (w0 .. w20) inside _barwrap
  *   hud_stats_foot               the footer (`show`); hud_stats_foot_l / _r halves
  *                                (`show`, c-*) with _label / _value Labels
  *
@@ -320,7 +324,32 @@ struct HudReveal
     float seconds = 6.0f;               ///< 0 or less: until HideReveal()
 };
 
-#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager002"
+/// One objective of a tracker (ShowTracker). A null or empty title hides the row.
+struct HudTrackerRow
+{
+    const char* title = nullptr;
+    const char* sub = nullptr;      ///< a line under the title; null or "" for none
+    const char* value = nullptr;    ///< on the right, e.g. "3/10"
+    float progress = -1.0f;         ///< 0..1 draws the bar; below 0 hides it
+    bool done = false;              ///< ticked off, in the panel's colour
+};
+
+/**
+ * @brief A tracker: a title and a tag (e.g. the page) over up to four
+ *        objectives, and a footer (e.g. the keys that page it).
+ */
+struct HudTracker
+{
+    static constexpr int kRows = 4;
+
+    const char* title = nullptr;
+    const char* tag = nullptr;      ///< right of the title; null or "" for none
+    HudTrackerRow rows[kRows];
+    const char* footer = nullptr;   ///< null or "" for none
+    HudColor color = HudColor::Gold;
+};
+
+#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager003"
 
 class ICustomhudManager
 {
@@ -519,6 +548,14 @@ public:
     virtual void ShowStats(CCSPlayerController* player, const HudStats& stats) = 0;
 
     virtual void HideStats(CCSPlayerController* player) = 0;
+
+    /**
+     * @brief The tracker on the right, until HideTracker(). Call it again when
+     *        something changes -- only what changed is sent.
+     */
+    virtual void ShowTracker(CCSPlayerController* player, const HudTracker& tracker) = 0;
+
+    virtual void HideTracker(CCSPlayerController* player) = 0;
 };
 
 #endif // _INCLUDE_ICUSTOMHUD_MANAGER_H

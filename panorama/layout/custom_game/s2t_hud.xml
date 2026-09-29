@@ -37,6 +37,9 @@
     hud_stats_row_0 .. _4          rows (show, c-*), with _label / _value Labels
     hud_stats_barwrap / _bar       the bar (show, c-* / w0 .. w20)
     hud_stats_foot                 the footer (show); hud_stats_foot_l / _r (show, c-*) with _label / _value
+    hud_tracker                    the tracker (show, c-*, has-tag, has-footer)
+    hud_tracker_title / _tag / _footer   Labels {s:text}
+    hud_tracker_row_0 .. _3        rows (show, done, has-sub, has-bar), _title / _sub / _value Labels, _bar (w0 .. w20)
     hud_status                     the chip row (show)
     hud_status_0 .. hud_status_3   chips (show, c-*)
     hud_status_N_label / _value    Labels {s:text}
@@ -196,6 +199,59 @@
 					<Label id="hud_stats_foot_r_value" class="s2t-stats-side-value" text="{s:text}" />
 				</Panel>
 			</Panel>
+		</Panel>
+
+		<!-- ---- tracker: up to four objectives on the right (ShowTracker) ---- -->
+		<Panel id="hud_tracker" class="s2t-tracker" hittest="false">
+			<Panel class="s2t-tracker-head" hittest="false">
+				<Label id="hud_tracker_title" class="s2t-tracker-title" text="{s:text}" />
+				<Label id="hud_tracker_tag" class="s2t-tracker-tag" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_tracker_row_0" class="s2t-tracker-row" hittest="false">
+				<Panel class="s2t-tracker-line" hittest="false">
+					<Panel class="s2t-tracker-check" hittest="false" />
+					<Label id="hud_tracker_row_0_title" class="s2t-tracker-row-title" text="{s:text}" />
+					<Label id="hud_tracker_row_0_value" class="s2t-tracker-row-value" text="{s:text}" />
+				</Panel>
+				<Label id="hud_tracker_row_0_sub" class="s2t-tracker-row-sub" text="{s:text}" />
+				<Panel class="s2t-tracker-barwrap" hittest="false">
+					<Panel id="hud_tracker_row_0_bar" class="s2t-tracker-bar" hittest="false" />
+				</Panel>
+			</Panel>
+			<Panel id="hud_tracker_row_1" class="s2t-tracker-row" hittest="false">
+				<Panel class="s2t-tracker-line" hittest="false">
+					<Panel class="s2t-tracker-check" hittest="false" />
+					<Label id="hud_tracker_row_1_title" class="s2t-tracker-row-title" text="{s:text}" />
+					<Label id="hud_tracker_row_1_value" class="s2t-tracker-row-value" text="{s:text}" />
+				</Panel>
+				<Label id="hud_tracker_row_1_sub" class="s2t-tracker-row-sub" text="{s:text}" />
+				<Panel class="s2t-tracker-barwrap" hittest="false">
+					<Panel id="hud_tracker_row_1_bar" class="s2t-tracker-bar" hittest="false" />
+				</Panel>
+			</Panel>
+			<Panel id="hud_tracker_row_2" class="s2t-tracker-row" hittest="false">
+				<Panel class="s2t-tracker-line" hittest="false">
+					<Panel class="s2t-tracker-check" hittest="false" />
+					<Label id="hud_tracker_row_2_title" class="s2t-tracker-row-title" text="{s:text}" />
+					<Label id="hud_tracker_row_2_value" class="s2t-tracker-row-value" text="{s:text}" />
+				</Panel>
+				<Label id="hud_tracker_row_2_sub" class="s2t-tracker-row-sub" text="{s:text}" />
+				<Panel class="s2t-tracker-barwrap" hittest="false">
+					<Panel id="hud_tracker_row_2_bar" class="s2t-tracker-bar" hittest="false" />
+				</Panel>
+			</Panel>
+			<Panel id="hud_tracker_row_3" class="s2t-tracker-row" hittest="false">
+				<Panel class="s2t-tracker-line" hittest="false">
+					<Panel class="s2t-tracker-check" hittest="false" />
+					<Label id="hud_tracker_row_3_title" class="s2t-tracker-row-title" text="{s:text}" />
+					<Label id="hud_tracker_row_3_value" class="s2t-tracker-row-value" text="{s:text}" />
+				</Panel>
+				<Label id="hud_tracker_row_3_sub" class="s2t-tracker-row-sub" text="{s:text}" />
+				<Panel class="s2t-tracker-barwrap" hittest="false">
+					<Panel id="hud_tracker_row_3_bar" class="s2t-tracker-bar" hittest="false" />
+				</Panel>
+			</Panel>
+			<Label id="hud_tracker_footer" class="s2t-tracker-footer" text="{s:text}" />
 		</Panel>
 
 		<!-- ---- progress: labelled bar under the crosshair ---- -->

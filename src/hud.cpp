@@ -403,6 +403,7 @@ namespace hud
         HideCard(player);
         HideReveal(player);
         HideStats(player);
+        HideTracker(player);
 
         if (PlayerState* state = StateOf(player))
         {
@@ -968,6 +969,88 @@ namespace hud
 
         if (CCSCustomHudLayout* layout = m_text.handle.Get())
             layout->SetHasClass("hud_stats", kShow, false, player);
+    }
+
+    // ---- ICustomhudManager003 ---------------------------------------------------
+
+    namespace
+    {
+        constexpr const char* kTrackerRow[HudTracker::kRows] = { "hud_tracker_row_0", "hud_tracker_row_1", "hud_tracker_row_2", "hud_tracker_row_3" };
+        constexpr const char* kTrackerRowTitle[HudTracker::kRows] = { "hud_tracker_row_0_title", "hud_tracker_row_1_title", "hud_tracker_row_2_title", "hud_tracker_row_3_title" };
+        constexpr const char* kTrackerRowSub[HudTracker::kRows] = { "hud_tracker_row_0_sub", "hud_tracker_row_1_sub", "hud_tracker_row_2_sub", "hud_tracker_row_3_sub" };
+        constexpr const char* kTrackerRowValue[HudTracker::kRows] = { "hud_tracker_row_0_value", "hud_tracker_row_1_value", "hud_tracker_row_2_value", "hud_tracker_row_3_value" };
+        constexpr const char* kTrackerRowBar[HudTracker::kRows] = { "hud_tracker_row_0_bar", "hud_tracker_row_1_bar", "hud_tracker_row_2_bar", "hud_tracker_row_3_bar" };
+    }
+
+    void HudManager::ShowTracker(CCSPlayerController* player, const HudTracker& tracker)
+    {
+        PlayerState* state = StateOf(player);
+        CCSCustomHudLayout* layout = TextLayout();
+        if (!state || !layout)
+            return;
+
+        TrackerState& s = state->tracker;
+        int t = 0;
+        const auto text = [&](const char* id, const char* value)
+        {
+            const char* v = value ? value : "";
+            if (!s.textKnown[t] || s.text[t] != v)
+            {
+                layout->SetDialogVariableString(id, kText, v, player);
+                s.text[t] = v;
+                s.textKnown[t] = true;
+            }
+            ++t;
+        };
+        const auto toggle = [&](const char* panel, const char* cls, bool on, int& known)
+        {
+            if (known == static_cast<int>(on))
+                return;
+            layout->SetHasClass(panel, cls, on, player);
+            known = on;
+        };
+        const auto has = [](const char* s) { return s && *s; };
+
+        text("hud_tracker_title", tracker.title);
+        text("hud_tracker_tag", tracker.tag);
+        text("hud_tracker_footer", tracker.footer);
+        toggle("hud_tracker", "has-tag", has(tracker.tag), s.hasTag);
+        toggle("hud_tracker", "has-footer", has(tracker.footer), s.hasFooter);
+        SetVariant(layout, player, "hud_tracker", kColorClass, static_cast<int>(HudColor::Count), s.variant, static_cast<int>(tracker.color));
+
+        for (int i = 0; i < HudTracker::kRows; ++i)
+        {
+            const HudTrackerRow& row = tracker.rows[i];
+            text(kTrackerRowTitle[i], row.title);
+            text(kTrackerRowSub[i], row.sub);
+            text(kTrackerRowValue[i], row.value);
+            toggle(kTrackerRow[i], "has-sub", has(row.sub), s.rowHasSub[i]);
+            toggle(kTrackerRow[i], "done", row.done, s.rowDone[i]);
+
+            const bool bar = row.progress >= 0.0f;
+            if (bar)
+                SetVariant(layout, player, kTrackerRowBar[i], kBarClass, kBarSteps + 1, s.rowBar[i], BarStep(row.progress));
+            toggle(kTrackerRow[i], "has-bar", bar, s.rowHasBar[i]);
+            toggle(kTrackerRow[i], kShow, has(row.title), s.rowShown[i]);
+        }
+
+        if (!s.shown)
+        {
+            layout->SetHasClass("hud_tracker", kShow, true, player);
+            s.shown = true;
+        }
+    }
+
+    void HudManager::HideTracker(CCSPlayerController* player)
+    {
+        PlayerState* state = StateOf(player);
+        if (!state || !state->tracker.shown)
+            return;
+
+        state->tracker.shown = false;
+
+        if (CCSCustomHudLayout* layout = m_text.handle.Get())
+            layout->SetHasClass("hud_tracker", kShow, false, player);
     }
 
     // ---- plugin ----------------------------------------------------------------

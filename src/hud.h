@@ -108,6 +108,10 @@ namespace hud
         void ShowStats(CCSPlayerController* player, const HudStats& stats) override;
         void HideStats(CCSPlayerController* player) override;
 
+        // ICustomhudManager003
+        void ShowTracker(CCSPlayerController* player, const HudTracker& tracker) override;
+        void HideTracker(CCSPlayerController* player) override;
+
         // plugin
         void Init();
 
@@ -177,6 +181,23 @@ namespace hud
             int footSideVariant[2] = { -1, -1 };
         };
 
+        /// What the tracker last sent, like StatsState.
+        struct TrackerState
+        {
+            static constexpr int kTexts = 3 + 3 * HudTracker::kRows;
+            bool shown = false;
+            std::string text[kTexts];
+            bool textKnown[kTexts] = {};
+            int variant = -1;
+            int hasTag = -1;
+            int hasFooter = -1;
+            int rowShown[HudTracker::kRows] = { -1, -1, -1, -1 };
+            int rowDone[HudTracker::kRows] = { -1, -1, -1, -1 };
+            int rowHasSub[HudTracker::kRows] = { -1, -1, -1, -1 };
+            int rowHasBar[HudTracker::kRows] = { -1, -1, -1, -1 };
+            int rowBar[HudTracker::kRows] = { -1, -1, -1, -1 };
+        };
+
         struct PlayerState
         {
             SlotState slots[static_cast<int>(HudSlot::Count)];
@@ -211,6 +232,7 @@ namespace hud
             Timed reveal;
             bool revealAnim = false;
             StatsState stats;
+            TrackerState tracker;
         };
 
         CCSCustomHudLayout* Ensure(OwnedLayout& layout);
