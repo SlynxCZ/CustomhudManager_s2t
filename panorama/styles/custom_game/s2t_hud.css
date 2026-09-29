@@ -632,12 +632,14 @@
 
 .s2t-card {
     flow-children: right;
-    horizontal-align: left;
-    vertical-align: top;
-    /* under the radar, which takes the top-left corner down to about 290 px */
-    margin-top: 300px;
-    margin-left: 16px;
-    width: 300px;
+    /* the right edge just above the middle: the radar (top left, any size), the
+       killfeed and the toasts (top right) and the weapons (bottom right) all
+       stay clear */
+    horizontal-align: right;
+    vertical-align: center;
+    margin-bottom: 120px;
+    margin-right: 16px;
+    width: 280px;
     background-color: #0d1117cc;
     border-radius: 6px;
     overflow: clip;
