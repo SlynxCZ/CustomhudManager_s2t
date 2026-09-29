@@ -34,6 +34,9 @@ RUN apt update && apt install -y \
 
 RUN git config --system --add safe.directory '*'
 
+# AMBuild, the build the CI runs (the CMake build is for local use).
+RUN git clone https://github.com/SlynxCZ/ambuild /opt/ambuild && cd /opt/ambuild && python3 -m pip install .
+
 COPY docker/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN sed -i 's/\r$//' ./docker-entrypoint.sh && chmod +x ./docker-entrypoint.sh
 

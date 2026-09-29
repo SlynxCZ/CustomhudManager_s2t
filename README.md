@@ -59,7 +59,8 @@ cmake --build build
 mkdir build && cd build && python ../configure.py --enable-optimize --sdks cs2 && ambuild
 ```
 
-A line appended to `pushbuild.txt` on `main` makes the CI cut the next tag
+The CI builds with AMBuild on both platforms. A line appended to
+`pushbuild.txt` on `main` makes it cut the next tag
 and publish the Linux and Windows archives; the plugin reports that tag and
 the commit as its version (`toolkit list`).
 

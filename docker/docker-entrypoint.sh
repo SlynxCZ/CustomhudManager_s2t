@@ -35,19 +35,15 @@ export SOURCE2TOOLKIT_SDK="$SOURCE2TOOLKITSDK_DIR"
 export HL2SDKCS2="$HL2SDK_DIR"
 export CSGO_PROTO="$CSGO_PROTO_DIR/csgo"
 
-### --- Build ---------------------------------------------------------------
+### --- Build (AMBuild) ----------------------------------------------------
+# The hl2sdk comes from HL2SDKCS2, the manifests from the SDK's submodule.
 rm -rf build
 mkdir build
 cd build
-cmake .. -G Ninja \
-  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  -DCMAKE_C_COMPILER=clang-18 \
-  -DCMAKE_CXX_COMPILER=clang++-18
-cmake --build . -j"$(nproc)"
+CC=clang-18 CXX=clang++-18 python3 ../configure.py --enable-optimize --sdks cs2 --targets x86_64
+ambuild
 
 ### --- Package -------------------------------------------------------------
-# addons/source2toolkit/plugins/customhud_manager.stx, plus the panorama sources for
-# the client addon next to it.
-mkdir -p package
-cp -r addons package/
-cp -r ../panorama package/panorama
+# AMBuild wrote package/cs2/addons/source2toolkit/plugins/customhud_manager.stx;
+# the panorama sources for the client addon go next to it.
+cp -r ../panorama package/cs2/panorama

@@ -205,6 +205,9 @@ namespace hud
             Timed timer;
             bool timerAnim = false;
             Timed card;
+            /// What the card last sent, so a call every second sends only changes.
+            std::string cardText[3];
+            bool cardKnown = false;
             Timed reveal;
             bool revealAnim = false;
             StatsState stats;

@@ -36,11 +36,12 @@
 #include "hudmenu.h"
 #include "plugin.h"
 
+#include "globalvars.h"
+
 #include "source2toolkit/schema/entity/classes/CCSCustomHudLayout.h"
 #include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
 
 namespace hud
@@ -117,14 +118,16 @@ namespace hud
         constexpr const char* kShow = "show";
         constexpr const char* kText = "text";
 
-        // A steady clock, as the toolkit's scheduler uses: the engine's
-        // curtime through the SDK's CGlobalVars did not advance on a live
-        // server and nothing timed ever went away.
+        // The engine's game time. Everything timed here is cleared with the
+        // map (Clear() on level shutdown), so curtime starting again at every
+        // map does not matter; while the globals are gone (level shutdown)
+        // the last value holds.
         float Now()
         {
-            using namespace std::chrono;
-            static const steady_clock::time_point start = steady_clock::now();
-            return duration<float>(steady_clock::now() - start).count();
+            static float last = 0.0f;
+            if (CGlobalVars* globals = g_ToolkitAPI ? g_ToolkitAPI->GetGlobalVars() : nullptr)
+                last = globals->curtime;
+            return last;
         }
 
         float ExpireAt(float seconds)
@@ -796,13 +799,25 @@ namespace hud
         if (!state || !layout)
             return;
 
-        layout->SetDialogVariableString("hud_card_tag", kText, Safe(tag), player);
-        layout->SetDialogVariableString("hud_card_title", kText, Safe(title), player);
-        layout->SetDialogVariableString("hud_card_sub", kText, Safe(sub), player);
-        layout->SetHasClass("hud_card", "has-tag", tag && *tag, player);
-        layout->SetHasClass("hud_card", "has-sub", sub && *sub, player);
+        // Meant to be called every second with the same texts: only what
+        // changed goes to the player.
+        const char* texts[3] = { Safe(tag), Safe(title), Safe(sub) };
+        static constexpr const char* kCardLabel[3] = { "hud_card_tag", "hud_card_title", "hud_card_sub" };
+        for (int i = 0; i < 3; ++i)
+        {
+            if (!state->cardKnown || state->cardText[i] != texts[i])
+            {
+                layout->SetDialogVariableString(kCardLabel[i], kText, texts[i], player);
+                if (i != 1)
+                    layout->SetHasClass("hud_card", i == 0 ? "has-tag" : "has-sub", *texts[i] != 0, player);
+                state->cardText[i] = texts[i];
+            }
+        }
+        state->cardKnown = true;
         SetVariant(layout, player, "hud_card", kColorClass, static_cast<int>(HudColor::Count), state->card.variant, static_cast<int>(color));
-        layout->SetHasClass("hud_card", kShow, true, player);
+
+        if (!state->card.shown)
+            layout->SetHasClass("hud_card", kShow, true, player);
 
         state->card.shown = true;
         state->card.expire = -1.0f;

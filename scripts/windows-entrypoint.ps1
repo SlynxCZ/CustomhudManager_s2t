@@ -32,16 +32,19 @@ $env:SOURCE2TOOLKIT_SDK = $SOURCE2TOOLKITSDK_DIR
 $env:HL2SDKCS2 = $HL2SDK_DIR
 $env:CSGO_PROTO = "$CSGO_PROTO_DIR\csgo"
 
-### --- Build -----------------------------------------------------------------
+### --- Build (AMBuild) --------------------------------------------------------
+# AMBuild itself is installed by the workflow; the hl2sdk comes from HL2SDKCS2,
+# the manifests from the SDK's submodule.
 $REPO_ROOT = Split-Path -Parent $PSScriptRoot
 $BUILD_DIR = "$REPO_ROOT\build"
 if (Test-Path $BUILD_DIR) { Remove-Item -Recurse -Force $BUILD_DIR }
 New-Item -ItemType Directory $BUILD_DIR | Out-Null
 Set-Location $BUILD_DIR
-cmake $REPO_ROOT -G Ninja -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cmake --build $BUILD_DIR -- -j $env:NUMBER_OF_PROCESSORS
+python "$REPO_ROOT\configure.py" --enable-optimize --sdks cs2 --targets x86_64
+if ($LASTEXITCODE -ne 0) { throw "configure.py failed" }
+ambuild
+if ($LASTEXITCODE -ne 0) { throw "ambuild failed" }
 
 ### --- Package ---------------------------------------------------------------
-New-Item -ItemType Directory -Force "$BUILD_DIR\package" | Out-Null
-Copy-Item -Recurse -Force "$BUILD_DIR\addons" "$BUILD_DIR\package\"
-Copy-Item -Recurse -Force "$REPO_ROOT\panorama" "$BUILD_DIR\package\panorama"
+# AMBuild wrote package\cs2\addons\source2toolkit\plugins\customhud_manager.stx.
+Copy-Item -Recurse -Force "$REPO_ROOT\panorama" "$BUILD_DIR\package\cs2\panorama"
