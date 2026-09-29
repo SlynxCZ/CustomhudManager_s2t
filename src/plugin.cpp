@@ -59,7 +59,6 @@ bool HudPlugin::Load(PluginId id, IToolkitAPI* api, char* error, size_t maxlen, 
 
     hud::hudManager.Init();
 
-    TOOLKIT_LOG(this, "Serving %s.\n", CUSTOMHUD_MANAGER_INTERFACE_VERSION);
     return true;
 }
 

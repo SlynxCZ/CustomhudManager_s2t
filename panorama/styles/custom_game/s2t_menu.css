@@ -6,7 +6,7 @@
   the toolkit docs, "Authoring layouts", for the list of what works.
 
   The core toggles these classes: show (menu_dim, menu_root, rows, nav
-  buttons, footer) and disabled (rows). Everything else is free to change.
+  buttons, footer), disabled and has-sub (rows), grid and pos-* (menu_root). Everything else is free to change.
 */
 
 .s2t-menu-screen {
@@ -159,6 +159,77 @@
     font-family: Stratum2;
     font-size: 21px;
     color: #ffffff;
+    text-overflow: shrink;
+}
+
+.s2t-menu-sub {
+    vertical-align: center;
+    margin-left: 10px;
+    font-family: Stratum2;
+    font-size: 18px;
+    color: #f0a020;
+    visibility: collapse;
+}
+
+.s2t-menu-row.has-sub .s2t-menu-sub {
+    visibility: visible;
+}
+
+/* ---- grid (HudMenu::Grid): the six options as tiles, three to a row -------- */
+
+.s2t-menu.grid {
+    width: 612px;
+}
+
+.s2t-menu.grid .s2t-menu-rows {
+    flow-children: right-wrap;
+}
+
+.s2t-menu.grid .s2t-menu-row {
+    flow-children: down;
+    width: 178px;
+    height: 104px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border-left: 0px solid #00000000;
+    border-bottom: 3px solid #ffffff22;
+    transition: background-color 0.08s ease-in-out 0s, border-bottom 0.08s ease-in-out 0s;
+}
+
+.s2t-menu.grid .s2t-menu-row:hover {
+    border-left: 0px solid #00000000;
+    border-bottom: 3px solid #f0a020;
+}
+
+.s2t-menu.grid .s2t-menu-row.disabled:hover {
+    border-left: 0px solid #00000000;
+    border-bottom: 3px solid #ffffff22;
+}
+
+.s2t-menu.grid .s2t-menu-key {
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    border-radius: 4px;
+    vertical-align: top;
+    margin-right: 0px;
+    margin-bottom: 6px;
+}
+
+.s2t-menu.grid .s2t-menu-text {
+    width: 100%;
+    vertical-align: top;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.s2t-menu.grid .s2t-menu-sub {
+    width: 100%;
+    vertical-align: top;
+    margin-left: 0px;
+    margin-top: 2px;
+    font-size: 16px;
     text-overflow: shrink;
 }
 

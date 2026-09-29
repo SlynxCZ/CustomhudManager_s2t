@@ -16,11 +16,12 @@
 
   Ids:
     menu_dim                 backdrop (show)
-    menu_root                the window (show)
+    menu_root                the window (show, grid, pos-left / pos-center / pos-right)
     menu_title               Label {s:text}
     menu_row_0 .. menu_row_5 Button (show, disabled); click = option
     menu_row_N_key           Label {s:text}: the number key
     menu_row_N_text          Label {s:text}: the option
+    menu_row_N_sub           Label {s:text}: the part after '\n' (has-sub on the row)
     menu_prev / menu_next / menu_close   Button (show)
     menu_prev_text / menu_next_text / menu_close_text   Label {s:text}
     menu_footer              Label {s:text}: "page / pages" (show)
@@ -44,26 +45,32 @@
 				<Button id="menu_row_0" class="s2t-menu-row">
 					<Label id="menu_row_0_key" class="s2t-menu-key" text="{s:text}" />
 					<Label id="menu_row_0_text" class="s2t-menu-text" text="{s:text}" />
+					<Label id="menu_row_0_sub" class="s2t-menu-sub" text="{s:text}" />
 				</Button>
 				<Button id="menu_row_1" class="s2t-menu-row">
 					<Label id="menu_row_1_key" class="s2t-menu-key" text="{s:text}" />
 					<Label id="menu_row_1_text" class="s2t-menu-text" text="{s:text}" />
+					<Label id="menu_row_1_sub" class="s2t-menu-sub" text="{s:text}" />
 				</Button>
 				<Button id="menu_row_2" class="s2t-menu-row">
 					<Label id="menu_row_2_key" class="s2t-menu-key" text="{s:text}" />
 					<Label id="menu_row_2_text" class="s2t-menu-text" text="{s:text}" />
+					<Label id="menu_row_2_sub" class="s2t-menu-sub" text="{s:text}" />
 				</Button>
 				<Button id="menu_row_3" class="s2t-menu-row">
 					<Label id="menu_row_3_key" class="s2t-menu-key" text="{s:text}" />
 					<Label id="menu_row_3_text" class="s2t-menu-text" text="{s:text}" />
+					<Label id="menu_row_3_sub" class="s2t-menu-sub" text="{s:text}" />
 				</Button>
 				<Button id="menu_row_4" class="s2t-menu-row">
 					<Label id="menu_row_4_key" class="s2t-menu-key" text="{s:text}" />
 					<Label id="menu_row_4_text" class="s2t-menu-text" text="{s:text}" />
+					<Label id="menu_row_4_sub" class="s2t-menu-sub" text="{s:text}" />
 				</Button>
 				<Button id="menu_row_5" class="s2t-menu-row">
 					<Label id="menu_row_5_key" class="s2t-menu-key" text="{s:text}" />
 					<Label id="menu_row_5_text" class="s2t-menu-text" text="{s:text}" />
+					<Label id="menu_row_5_sub" class="s2t-menu-sub" text="{s:text}" />
 				</Button>
 			</Panel>
 

@@ -59,6 +59,9 @@ namespace hudmenu
         constexpr const char* kRowText[HudMenuInstance::kRows] = {
             "menu_row_0_text", "menu_row_1_text", "menu_row_2_text", "menu_row_3_text", "menu_row_4_text", "menu_row_5_text",
         };
+        constexpr const char* kRowSub[HudMenuInstance::kRows] = {
+            "menu_row_0_sub", "menu_row_1_sub", "menu_row_2_sub", "menu_row_3_sub", "menu_row_4_sub", "menu_row_5_sub",
+        };
         constexpr const char* kShow = "show";
         constexpr const char* kDisabled = "disabled";
 
@@ -154,6 +157,7 @@ namespace hudmenu
         HashIn(h, hudMenu_->DimBackground ? 1 : 0);
         HashIn(h, EffectiveCapture() ? 1 : 0);
         HashIn(h, static_cast<size_t>(Position()));
+        HashIn(h, hudMenu_->Grid ? 1 : 0);
         return h;
     }
 
@@ -198,8 +202,15 @@ namespace hudmenu
             if (idx < total)
             {
                 const auto& opt = opts[idx];
+                // "name\nsub": the sub part right of the row, or under the
+                // name on a tile.
+                const size_t nl = opt.Text.find('\n');
+                const std::string text = nl == std::string::npos ? opt.Text : opt.Text.substr(0, nl);
+                const std::string sub = nl == std::string::npos ? std::string() : opt.Text.substr(nl + 1);
                 layout->SetDialogVariableString(kRowKey[row], "text", std::to_string(row + 1).c_str(), player);
-                layout->SetDialogVariableString(kRowText[row], "text", opt.Text.c_str(), player);
+                layout->SetDialogVariableString(kRowText[row], "text", text.c_str(), player);
+                layout->SetDialogVariableString(kRowSub[row], "text", sub.c_str(), player);
+                layout->SetHasClass(kRowPanel[row], "has-sub", !sub.empty(), player);
                 layout->SetHasClass(kRowPanel[row], kDisabled, opt.Disabled, player);
                 layout->SetHasClass(kRowPanel[row], kShow, true, player);
             }
@@ -225,6 +236,7 @@ namespace hudmenu
         layout->SetHasClass("menu_footer", kShow, pages > 1, player);
 
         layout->SetHasClass("menu_dim", kShow, hudMenu_->DimBackground, player);
+        layout->SetHasClass("menu_root", "grid", hudMenu_->Grid, player);
 
         // Where the window sits: all three set, so a position left on the
         // slot by an earlier menu does not linger next to this one's.

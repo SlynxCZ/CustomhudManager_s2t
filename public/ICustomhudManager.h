@@ -236,7 +236,9 @@ enum class HudMenuPosition : int
  * The same options and handlers as CenterHtmlMenu; only the screen differs.
  * The player clicks the rows or presses 1-6 (the options of the page), 7
  * (previous page), 8 (next page), 9 (close), so the chat triggers keep
- * working. The navigation texts are the plugin's, which is how they get to
+ * working. An option's text may have a second part after a '\n' (a price,
+ * what comes with the weapon): the right of the row in a list, under the
+ * name on a tile. The navigation texts are the plugin's, which is how they get to
  * be in the player's language.
  *
  * Needs the menu layout ("s2t_menu"; the reference layout is
@@ -275,6 +277,11 @@ public:
     /// Where the window sits: one of the classes pos-left, pos-center,
     /// pos-right goes on menu_root and the stylesheet places it.
     HudMenuPosition Position = HudMenuPosition::Left;
+
+    /// Tiles instead of rows: the six options of a page three to a row, the
+    /// name large and the part after '\n' under it (shops, weapon choosers).
+    /// The class grid on menu_root; the keys and the paging stay the same.
+    bool Grid = false;
 };
 
 /// One row of a stats panel (ShowStats). A null or empty label hides the row.
@@ -349,7 +356,7 @@ struct HudTracker
     HudColor color = HudColor::Gold;
 };
 
-#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager003"
+#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager004"
 
 class ICustomhudManager
 {
