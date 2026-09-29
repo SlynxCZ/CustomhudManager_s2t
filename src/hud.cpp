@@ -89,7 +89,7 @@ namespace hud
         constexpr const char* kToastClass[] = { "t-info", "t-success", "t-warning", "t-danger", "t-neutral" };
         static_assert(sizeof(kToastClass) / sizeof(kToastClass[0]) == static_cast<size_t>(HudToastStyle::Count));
 
-        constexpr const char* kOverlayClass[] = { "o-poison", "o-burn", "o-freeze", "o-heal", "o-blind", "o-black" };
+        constexpr const char* kOverlayClass[] = { "o-poison", "o-burn", "o-freeze", "o-heal", "o-blind", "o-black", "o-blood" };
         static_assert(sizeof(kOverlayClass) / sizeof(kOverlayClass[0]) == static_cast<size_t>(HudOverlay::Count));
 
         // w0 .. w20: a bar's fill in 5 % steps, one class each (clip in the
@@ -197,7 +197,6 @@ namespace hud
         }
 
         layout.handle = created->GetHandle();
-        TOOLKIT_LOG(&g_Plugin, "custom_hud_layout '%s' spawned (%s)\n", layout.name.c_str(), layout.targetName ? layout.targetName : "");
 
         if (layout.onCreated)
             layout.onCreated(created);

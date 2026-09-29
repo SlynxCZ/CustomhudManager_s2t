@@ -209,6 +209,7 @@ enum class HudOverlay : int
     Heal,
     Blind,      ///< white-out
     Black,      ///< fade to black, with an optional label
+    Blood,      ///< appended: a red vignette with a big red label (a headshot taken)
 
     Count
 };
