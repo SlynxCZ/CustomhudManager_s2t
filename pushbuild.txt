@@ -4,3 +4,4 @@ The version the plugin reports is the release tag and the commit (SEMVER @ GITHU
 Rebuilt against the SDK whose hook header survives windows.h coming first (MSVC).
 Windows: the plugin links the static CRT the SDK library is built with.
 The interface is this repository's own header, public/ICustomhudManager.h (ICustomhudManager, CUSTOMHUD_MANAGER_INTERFACE_VERSION = ICustomhudManager001); the SDK no longer carries it. Plugins vendor public/ and declare g_pCustomhudManager themselves.
+ICustomhudManager002: ShowReveal (a card in the upper middle with an entrance: tag, title, line, info, captioned block) and ShowStats (a label/value panel at the bottom left with a bar and a two-number footer, sending only what changed); HudColor::Gold. Needs the funplayhud addon with the new panels.

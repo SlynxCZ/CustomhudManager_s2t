@@ -399,8 +399,8 @@ namespace hud
         HideOverlay(player);
         HideTimer(player);
         HideCard(player);
-        HideTimer(player);
-        HideCard(player);
+        HideReveal(player);
+        HideStats(player);
 
         if (PlayerState* state = StateOf(player))
         {
@@ -821,6 +821,141 @@ namespace hud
             layout->SetHasClass("hud_card", kShow, false, player);
     }
 
+    // ---- ICustomhudManager002 ---------------------------------------------------
+
+    namespace
+    {
+        const char* Or(const char* s) { return s ? s : ""; }
+        bool Has(const char* s) { return s && *s; }
+
+        void Toggle(CCSCustomHudLayout* layout, CCSPlayerController* player, const char* panel, const char* cls, bool on, int& known)
+        {
+            if (known == static_cast<int>(on))
+                return;
+            layout->SetHasClass(panel, cls, on, player);
+            known = on;
+        }
+
+        constexpr const char* kStatsRowPanel[HudStats::kRows] = {
+            "hud_stats_row_0", "hud_stats_row_1", "hud_stats_row_2", "hud_stats_row_3", "hud_stats_row_4",
+        };
+        constexpr const char* kStatsRowLabel[HudStats::kRows] = {
+            "hud_stats_row_0_label", "hud_stats_row_1_label", "hud_stats_row_2_label", "hud_stats_row_3_label", "hud_stats_row_4_label",
+        };
+        constexpr const char* kStatsRowValue[HudStats::kRows] = {
+            "hud_stats_row_0_value", "hud_stats_row_1_value", "hud_stats_row_2_value", "hud_stats_row_3_value", "hud_stats_row_4_value",
+        };
+    }
+
+    void HudManager::ShowReveal(CCSPlayerController* player, const HudReveal& reveal)
+    {
+        PlayerState* state = StateOf(player);
+        CCSCustomHudLayout* layout = TextLayout();
+        if (!state || !layout)
+            return;
+
+        layout->SetDialogVariableString("hud_reveal_tag", kText, Or(reveal.tag), player);
+        layout->SetDialogVariableString("hud_reveal_title", kText, Or(reveal.title), player);
+        layout->SetDialogVariableString("hud_reveal_sub", kText, Or(reveal.sub), player);
+        layout->SetDialogVariableString("hud_reveal_info", kText, Or(reveal.info), player);
+        layout->SetDialogVariableString("hud_reveal_extra_label", kText, Or(reveal.extraLabel), player);
+        layout->SetDialogVariableString("hud_reveal_extra", kText, Or(reveal.extra), player);
+        layout->SetHasClass("hud_reveal", "has-tag", Has(reveal.tag), player);
+        layout->SetHasClass("hud_reveal", "has-sub", Has(reveal.sub), player);
+        layout->SetHasClass("hud_reveal", "has-info", Has(reveal.info), player);
+        layout->SetHasClass("hud_reveal", "has-extra", Has(reveal.extra), player);
+        SetVariant(layout, player, "hud_reveal", kColorClass, static_cast<int>(HudColor::Count), state->reveal.variant, static_cast<int>(reveal.color));
+        layout->SetHasClass("hud_reveal", kShow, true, player);
+        Restart(layout, player, "hud_reveal", "in-a", "in-b", state->revealAnim);
+
+        state->reveal.shown = true;
+        state->reveal.expire = ExpireAt(reveal.seconds);
+    }
+
+    void HudManager::HideReveal(CCSPlayerController* player)
+    {
+        PlayerState* state = StateOf(player);
+        if (!state || !state->reveal.shown)
+            return;
+
+        state->reveal.shown = false;
+        state->reveal.expire = -1.0f;
+
+        if (CCSCustomHudLayout* layout = m_text.handle.Get())
+            layout->SetHasClass("hud_reveal", kShow, false, player);
+    }
+
+    void HudManager::ShowStats(CCSPlayerController* player, const HudStats& stats)
+    {
+        PlayerState* state = StateOf(player);
+        CCSCustomHudLayout* layout = TextLayout();
+        if (!state || !layout)
+            return;
+
+        StatsState& s = state->stats;
+        int t = 0;
+        const auto text = [&](const char* id, const char* value)
+        {
+            const char* v = Or(value);
+            if (!s.textKnown[t] || s.text[t] != v)
+            {
+                layout->SetDialogVariableString(id, kText, v, player);
+                s.text[t] = v;
+                s.textKnown[t] = true;
+            }
+            ++t;
+        };
+
+        text("hud_stats_title", stats.title);
+        SetVariant(layout, player, "hud_stats", kColorClass, static_cast<int>(HudColor::Count), s.titleVariant, static_cast<int>(stats.color));
+
+        for (int i = 0; i < HudStats::kRows; ++i)
+        {
+            const HudStatRow& row = stats.rows[i];
+            text(kStatsRowLabel[i], row.label);
+            text(kStatsRowValue[i], row.value);
+            SetVariant(layout, player, kStatsRowPanel[i], kColorClass, static_cast<int>(HudColor::Count), s.rowVariant[i], static_cast<int>(row.color));
+            Toggle(layout, player, kStatsRowPanel[i], kShow, Has(row.label), s.rowShown[i]);
+        }
+
+        const bool bar = stats.bar >= 0.0f;
+        if (bar)
+        {
+            SetVariant(layout, player, "hud_stats_bar", kBarClass, kBarSteps + 1, s.barStep, BarStep(stats.bar));
+            SetVariant(layout, player, "hud_stats_barwrap", kColorClass, static_cast<int>(HudColor::Count), s.barVariant, static_cast<int>(stats.barColor));
+        }
+        Toggle(layout, player, "hud_stats_barwrap", kShow, bar, s.barShown);
+
+        const bool left = Has(stats.footLeftLabel), right = Has(stats.footRightLabel);
+        text("hud_stats_foot_l_label", stats.footLeftLabel);
+        text("hud_stats_foot_l_value", stats.footLeftValue);
+        text("hud_stats_foot_r_label", stats.footRightLabel);
+        text("hud_stats_foot_r_value", stats.footRightValue);
+        SetVariant(layout, player, "hud_stats_foot_l", kColorClass, static_cast<int>(HudColor::Count), s.footSideVariant[0], static_cast<int>(stats.footLeftColor));
+        SetVariant(layout, player, "hud_stats_foot_r", kColorClass, static_cast<int>(HudColor::Count), s.footSideVariant[1], static_cast<int>(stats.footRightColor));
+        Toggle(layout, player, "hud_stats_foot_l", kShow, left, s.footSideShown[0]);
+        Toggle(layout, player, "hud_stats_foot_r", kShow, right, s.footSideShown[1]);
+        Toggle(layout, player, "hud_stats_foot", kShow, left || right, s.footShown);
+
+        if (!s.shown)
+        {
+            layout->SetHasClass("hud_stats", kShow, true, player);
+            s.shown = true;
+        }
+    }
+
+    void HudManager::HideStats(CCSPlayerController* player)
+    {
+        PlayerState* state = StateOf(player);
+        if (!state || !state->stats.shown)
+            return;
+
+        state->stats.shown = false;
+
+        if (CCSCustomHudLayout* layout = m_text.handle.Get())
+            layout->SetHasClass("hud_stats", kShow, false, player);
+    }
+
     // ---- plugin ----------------------------------------------------------------
 
     void HudManager::Tick()
@@ -884,6 +1019,8 @@ namespace hud
                 controller() ? HideCountdown(player) : (void)(state.countdown = Timed{});
             if (due(state.overlay))
                 controller() ? HideOverlay(player) : (void)(state.overlay = Timed{});
+            if (due(state.reveal))
+                controller() ? HideReveal(player) : (void)(state.reveal = Timed{});
 
             if (due(state.hit))
             {

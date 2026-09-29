@@ -108,6 +108,16 @@
  *   hud_timer_tag, _num, _sub    Labels text="{s:text}": the pill, the time, the line under it
  *   hud_card                     the corner card (`show`, c-*)
  *   hud_card_tag, _title, _sub   Labels text="{s:text}"
+ *   hud_reveal                   the reveal card (`show`, c-*, in-a / in-b, has-tag,
+ *                                has-sub, has-info, has-extra)
+ *   hud_reveal_tag, _title, _sub, _info, _extra_label, _extra   Labels text="{s:text}"
+ *   hud_stats                    the stats panel (`show`, c-*)
+ *   hud_stats_title              Label text="{s:text}"
+ *   hud_stats_row_0 .. _4        rows (`show`, c-* for the value)
+ *   hud_stats_row_N_label, _value  Labels text="{s:text}"
+ *   hud_stats_barwrap            Panel (`show`, c-*), hud_stats_bar inside with w0 .. w20
+ *   hud_stats_foot               the footer (`show`); hud_stats_foot_l / _r halves
+ *                                (`show`, c-*) with _label / _value Labels
  *
  * Everything is per player: what one player sees, nobody else does.
  */
@@ -262,7 +272,54 @@ public:
     HudMenuPosition Position = HudMenuPosition::Left;
 };
 
-#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager001"
+/// One row of a stats panel (ShowStats). A null or empty label hides the row.
+struct HudStatRow
+{
+    const char* label = nullptr;
+    const char* value = nullptr;
+    HudColor color = HudColor::White;   ///< the value's colour
+};
+
+/**
+ * @brief A stats panel: a title in the panel's colour, up to five label/value
+ *        rows, an optional bar under the title and an optional two-number
+ *        footer (e.g. who is alive on each side).
+ */
+struct HudStats
+{
+    static constexpr int kRows = 5;
+
+    const char* title = nullptr;
+    HudColor color = HudColor::White;          ///< the title, its dot and the edge
+    HudStatRow rows[kRows];
+    float bar = -1.0f;                          ///< 0..1 draws the bar; below 0 hides it
+    HudColor barColor = HudColor::Green;
+    const char* footLeftLabel = nullptr;        ///< a null label hides that half of the footer
+    const char* footLeftValue = nullptr;
+    HudColor footLeftColor = HudColor::Blue;
+    const char* footRightLabel = nullptr;
+    const char* footRightValue = nullptr;
+    HudColor footRightColor = HudColor::Orange;
+};
+
+/**
+ * @brief A reveal card (ShowReveal): a small tag, a big title, a line under
+ *        it, an info line under a divider and an optional captioned block --
+ *        a role at round start, a duel starting, a body found.
+ */
+struct HudReveal
+{
+    const char* tag = nullptr;          ///< above the title; null or "" for none
+    const char* title = nullptr;
+    const char* sub = nullptr;          ///< under the title; null or "" for none
+    const char* info = nullptr;         ///< under the divider; null or "" for none
+    const char* extraLabel = nullptr;   ///< the block's caption...
+    const char* extra = nullptr;        ///< ...and text; a null or empty text hides the block
+    HudColor color = HudColor::White;   ///< the title, the divider and the glow
+    float seconds = 6.0f;               ///< 0 or less: until HideReveal()
+};
+
+#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager002"
 
 class ICustomhudManager
 {
@@ -444,6 +501,23 @@ public:
     virtual void ShowCard(CCSPlayerController* player, const char* tag, const char* title, const char* sub, HudColor color) = 0;
 
     virtual void HideCard(CCSPlayerController* player) = 0;
+
+    /**
+     * @brief A reveal card in the upper middle of the screen, with an
+     *        entrance each call; goes after reveal.seconds.
+     */
+    virtual void ShowReveal(CCSPlayerController* player, const HudReveal& reveal) = 0;
+
+    virtual void HideReveal(CCSPlayerController* player) = 0;
+
+    /**
+     * @brief The stats panel at the bottom left, until HideStats(). Meant to
+     *        be called again whenever a value changes -- every second is
+     *        fine: only what changed is sent to the player.
+     */
+    virtual void ShowStats(CCSPlayerController* player, const HudStats& stats) = 0;
+
+    virtual void HideStats(CCSPlayerController* player) = 0;
 };
 
 #endif // _INCLUDE_ICUSTOMHUD_MANAGER_H

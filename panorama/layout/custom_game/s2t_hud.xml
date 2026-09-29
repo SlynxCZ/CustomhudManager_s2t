@@ -30,6 +30,13 @@
     hud_timer_tag / _num / _sub    Labels {s:text}
     hud_card                       the corner card (show, c-*, has-tag, has-sub)
     hud_card_tag / _title / _sub   Labels {s:text}
+    hud_reveal                     the reveal card (show, c-*, in-a / in-b, has-tag / has-sub / has-info / has-extra)
+    hud_reveal_tag / _title / _sub / _info / _extra_label / _extra   Labels {s:text}
+    hud_stats                      the stats panel (show, c-*)
+    hud_stats_title                Label {s:text}
+    hud_stats_row_0 .. _4          rows (show, c-*), with _label / _value Labels
+    hud_stats_barwrap / _bar       the bar (show, c-* / w0 .. w20)
+    hud_stats_foot                 the footer (show); hud_stats_foot_l / _r (show, c-*) with _label / _value
     hud_status                     the chip row (show)
     hud_status_0 .. hud_status_3   chips (show, c-*)
     hud_status_N_label / _value    Labels {s:text}
@@ -134,6 +141,60 @@
 				<Label id="hud_card_tag" class="s2t-card-tag" text="{s:text}" />
 				<Label id="hud_card_title" class="s2t-card-title" text="{s:text}" />
 				<Label id="hud_card_sub" class="s2t-card-sub" text="{s:text}" />
+			</Panel>
+		</Panel>
+
+		<!-- ---- reveal: a card in the upper middle with an entrance (ShowReveal) ---- -->
+		<Panel id="hud_reveal" class="s2t-reveal" hittest="false">
+			<Label id="hud_reveal_tag" class="s2t-reveal-tag" text="{s:text}" />
+			<Label id="hud_reveal_title" class="s2t-reveal-title" text="{s:text}" />
+			<Panel class="s2t-reveal-divider" hittest="false" />
+			<Label id="hud_reveal_sub" class="s2t-reveal-sub" text="{s:text}" />
+			<Label id="hud_reveal_info" class="s2t-reveal-info" text="{s:text}" />
+			<Panel class="s2t-reveal-extra" hittest="false">
+				<Label id="hud_reveal_extra_label" class="s2t-reveal-extra-label" text="{s:text}" />
+				<Label id="hud_reveal_extra" class="s2t-reveal-extra-text" text="{s:text}" />
+			</Panel>
+		</Panel>
+
+		<!-- ---- stats: a label/value panel at the bottom left (ShowStats) ---- -->
+		<Panel id="hud_stats" class="s2t-stats" hittest="false">
+			<Panel class="s2t-stats-head" hittest="false">
+				<Panel class="s2t-stats-dot" hittest="false" />
+				<Label id="hud_stats_title" class="s2t-stats-title" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_stats_barwrap" class="s2t-stats-barwrap" hittest="false">
+				<Panel id="hud_stats_bar" class="s2t-stats-bar" hittest="false" />
+			</Panel>
+			<Panel id="hud_stats_row_0" class="s2t-stats-row" hittest="false">
+				<Label id="hud_stats_row_0_label" class="s2t-stats-label" text="{s:text}" />
+				<Label id="hud_stats_row_0_value" class="s2t-stats-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_stats_row_1" class="s2t-stats-row" hittest="false">
+				<Label id="hud_stats_row_1_label" class="s2t-stats-label" text="{s:text}" />
+				<Label id="hud_stats_row_1_value" class="s2t-stats-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_stats_row_2" class="s2t-stats-row" hittest="false">
+				<Label id="hud_stats_row_2_label" class="s2t-stats-label" text="{s:text}" />
+				<Label id="hud_stats_row_2_value" class="s2t-stats-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_stats_row_3" class="s2t-stats-row" hittest="false">
+				<Label id="hud_stats_row_3_label" class="s2t-stats-label" text="{s:text}" />
+				<Label id="hud_stats_row_3_value" class="s2t-stats-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_stats_row_4" class="s2t-stats-row" hittest="false">
+				<Label id="hud_stats_row_4_label" class="s2t-stats-label" text="{s:text}" />
+				<Label id="hud_stats_row_4_value" class="s2t-stats-value" text="{s:text}" />
+			</Panel>
+			<Panel id="hud_stats_foot" class="s2t-stats-foot" hittest="false">
+				<Panel id="hud_stats_foot_l" class="s2t-stats-side" hittest="false">
+					<Label id="hud_stats_foot_l_label" class="s2t-stats-side-label" text="{s:text}" />
+					<Label id="hud_stats_foot_l_value" class="s2t-stats-side-value" text="{s:text}" />
+				</Panel>
+				<Panel id="hud_stats_foot_r" class="s2t-stats-side" hittest="false">
+					<Label id="hud_stats_foot_r_label" class="s2t-stats-side-label" text="{s:text}" />
+					<Label id="hud_stats_foot_r_value" class="s2t-stats-side-value" text="{s:text}" />
+				</Panel>
 			</Panel>
 		</Panel>
 

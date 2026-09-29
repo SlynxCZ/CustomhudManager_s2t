@@ -102,6 +102,12 @@ namespace hud
         void ShowCard(CCSPlayerController* player, const char* tag, const char* title, const char* sub, HudColor color) override;
         void HideCard(CCSPlayerController* player) override;
 
+        // ICustomhudManager002
+        void ShowReveal(CCSPlayerController* player, const HudReveal& reveal) override;
+        void HideReveal(CCSPlayerController* player) override;
+        void ShowStats(CCSPlayerController* player, const HudStats& stats) override;
+        void HideStats(CCSPlayerController* player) override;
+
         // plugin
         void Init();
 
@@ -152,6 +158,25 @@ namespace hud
             std::string text;
         };
 
+        /// What the stats panel last sent this player, so a call every second
+        /// only sends what changed. -1 / kUnset: unknown, always sent.
+        struct StatsState
+        {
+            static constexpr int kTexts = 2 + 2 * HudStats::kRows + 4;
+            bool shown = false;
+            std::string text[kTexts];
+            bool textKnown[kTexts] = {};
+            int titleVariant = -1;
+            int rowShown[HudStats::kRows] = { -1, -1, -1, -1, -1 };
+            int rowVariant[HudStats::kRows] = { -1, -1, -1, -1, -1 };
+            int barShown = -1;
+            int barStep = -1;
+            int barVariant = -1;
+            int footShown = -1;
+            int footSideShown[2] = { -1, -1 };
+            int footSideVariant[2] = { -1, -1 };
+        };
+
         struct PlayerState
         {
             SlotState slots[static_cast<int>(HudSlot::Count)];
@@ -180,6 +205,9 @@ namespace hud
             Timed timer;
             bool timerAnim = false;
             Timed card;
+            Timed reveal;
+            bool revealAnim = false;
+            StatsState stats;
         };
 
         CCSCustomHudLayout* Ensure(OwnedLayout& layout);
