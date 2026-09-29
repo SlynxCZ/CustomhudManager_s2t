@@ -25,7 +25,7 @@ $HL2SDK_DIR = "$SDK_DIR\hl2sdk-cs2"
 $CSGO_PROTO_DIR = "$SDK_DIR\Protobufs"
 if (Test-Path $SDK_DIR) { Remove-Item -Recurse -Force $SDK_DIR }
 New-Item -ItemType Directory -Force $SDK_DIR | Out-Null
-git clone --recursive https://github.com/SlynxCZ/source2toolkit-sdk.git $SOURCE2TOOLKITSDK_DIR
+git clone --recursive https://github.com/Source2Toolkit/source2toolkit-sdk.git $SOURCE2TOOLKITSDK_DIR
 git clone --recursive --branch cs2 --single-branch https://github.com/alliedmodders/hl2sdk.git $HL2SDK_DIR
 git clone --recursive https://github.com/SteamDatabase/Protobufs $CSGO_PROTO_DIR
 $env:SOURCE2TOOLKIT_SDK = $SOURCE2TOOLKITSDK_DIR
