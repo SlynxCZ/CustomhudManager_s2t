@@ -412,8 +412,8 @@ public:
     virtual void OpenMenu(PluginId owner, CCSPlayerController* player, HudMenu* menu) = 0;
 
     /**
-     * @brief The big timer: a tag pill, a large time and a line under it,
-     *        with a halo in the colour; each call pulses the number.
+     * @brief The timer: a tag pill, the time and a line after it in a row
+     *        under the round timer; each call pulses the number.
      *
      * A countdown is one call a second with the new time; the caller keeps
      * the clock. Stays until HideTimer().

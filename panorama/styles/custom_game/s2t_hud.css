@@ -486,13 +486,16 @@
 .s2t-countdown.c-cyan .s2t-countdown-text { color: #4df2ff; }
 .s2t-countdown.c-grey .s2t-countdown-text { color: #a0a8b0; }
 
-/* ---- timer: the big time with a halo, centre (ShowTimer) -------------------- */
+/* ---- timer: a compact row under the round timer (ShowTimer) ---------------- */
 
 .s2t-timer {
-    flow-children: down;
+    flow-children: right;
     horizontal-align: center;
-    vertical-align: center;
-    margin-bottom: 260px;
+    vertical-align: top;
+    margin-top: 96px;
+    padding: 4px 14px 4px 8px;
+    background-color: #0d1117cc;
+    border-radius: 16px;
     visibility: collapse;
     opacity: 0;
 }
@@ -504,10 +507,10 @@
 
 .s2t-timer-pill {
     flow-children: right;
-    horizontal-align: center;
-    margin-bottom: 12px;
-    padding: 5px 16px;
-    border-radius: 20px;
+    vertical-align: center;
+    margin-right: 10px;
+    padding: 3px 10px;
+    border-radius: 12px;
     border: 1px solid #f0a02066;
     background-color: #f0a0201f;
     visibility: collapse;
@@ -520,7 +523,7 @@
 .s2t-timer-pill-dot {
     width: 6px;
     height: 6px;
-    margin-right: 8px;
+    margin-right: 7px;
     vertical-align: center;
     border-radius: 50%;
     background-color: #f0a020;
@@ -530,41 +533,33 @@
 .s2t-timer-pill-text {
     font-family: Stratum2;
     font-weight: bold;
-    font-size: 13px;
-    letter-spacing: 2.2px;
+    font-size: 12px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: #f0a020;
     vertical-align: center;
 }
 
+/* kept as the number's wrapper so the layout ids stay; no halo any more */
 .s2t-timer-halo {
-    width: 190px;
-    height: 190px;
-    flow-children: down;
-    horizontal-align: center;
-    border-radius: 50%;
-    background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #f0a0202a ), to( #f0a02000 ) );
+    vertical-align: center;
 }
 
 .s2t-timer-num {
-    horizontal-align: center;
     vertical-align: center;
     font-family: Stratum2;
     font-weight: bold;
-    font-size: 84px;
-    letter-spacing: 2px;
-    text-align: center;
+    font-size: 26px;
+    letter-spacing: 1px;
     color: #f0a020;
-    text-shadow: 0px 0px 40px 4.0 #f0a020cc;
+    text-shadow: 0px 1px 3px 1.0 #000000cc;
 }
 
 .s2t-timer-sub {
-    horizontal-align: center;
-    margin-top: 4px;
+    vertical-align: center;
+    margin-left: 10px;
     font-family: Stratum2;
-    font-size: 20px;
-    letter-spacing: 1px;
-    text-align: center;
+    font-size: 14px;
     color: #dfe4ea;
     visibility: collapse;
 }
@@ -586,48 +581,39 @@
     animation-timing-function: ease-out;
 }
 
-.s2t-timer.c-white .s2t-timer-num { color: #ffffff; text-shadow: 0px 0px 40px 4.0 #ffffffcc; }
-.s2t-timer.c-white .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #ffffff2a ), to( #ffffff00 ) ); }
+.s2t-timer.c-white .s2t-timer-num { color: #ffffff; }
 .s2t-timer.c-white .s2t-timer-pill { border: 1px solid #ffffff66; background-color: #ffffff1f; }
 .s2t-timer.c-white .s2t-timer-pill-dot { background-color: #ffffff; box-shadow: #ffffffaa 0px 0px 6px 0px; }
 .s2t-timer.c-white .s2t-timer-pill-text { color: #ffffff; }
-.s2t-timer.c-red .s2t-timer-num { color: #ff4d4d; text-shadow: 0px 0px 40px 4.0 #ff4d4dcc; }
-.s2t-timer.c-red .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #ff4d4d2a ), to( #ff4d4d00 ) ); }
+.s2t-timer.c-red .s2t-timer-num { color: #ff4d4d; }
 .s2t-timer.c-red .s2t-timer-pill { border: 1px solid #ff4d4d66; background-color: #ff4d4d1f; }
 .s2t-timer.c-red .s2t-timer-pill-dot { background-color: #ff4d4d; box-shadow: #ff4d4daa 0px 0px 6px 0px; }
 .s2t-timer.c-red .s2t-timer-pill-text { color: #ff4d4d; }
-.s2t-timer.c-green .s2t-timer-num { color: #4dff6a; text-shadow: 0px 0px 40px 4.0 #4dff6acc; }
-.s2t-timer.c-green .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #4dff6a2a ), to( #4dff6a00 ) ); }
+.s2t-timer.c-green .s2t-timer-num { color: #4dff6a; }
 .s2t-timer.c-green .s2t-timer-pill { border: 1px solid #4dff6a66; background-color: #4dff6a1f; }
 .s2t-timer.c-green .s2t-timer-pill-dot { background-color: #4dff6a; box-shadow: #4dff6aaa 0px 0px 6px 0px; }
 .s2t-timer.c-green .s2t-timer-pill-text { color: #4dff6a; }
-.s2t-timer.c-blue .s2t-timer-num { color: #4da6ff; text-shadow: 0px 0px 40px 4.0 #4da6ffcc; }
-.s2t-timer.c-blue .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #4da6ff2a ), to( #4da6ff00 ) ); }
+.s2t-timer.c-blue .s2t-timer-num { color: #4da6ff; }
 .s2t-timer.c-blue .s2t-timer-pill { border: 1px solid #4da6ff66; background-color: #4da6ff1f; }
 .s2t-timer.c-blue .s2t-timer-pill-dot { background-color: #4da6ff; box-shadow: #4da6ffaa 0px 0px 6px 0px; }
 .s2t-timer.c-blue .s2t-timer-pill-text { color: #4da6ff; }
-.s2t-timer.c-yellow .s2t-timer-num { color: #ffe14d; text-shadow: 0px 0px 40px 4.0 #ffe14dcc; }
-.s2t-timer.c-yellow .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #ffe14d2a ), to( #ffe14d00 ) ); }
+.s2t-timer.c-yellow .s2t-timer-num { color: #ffe14d; }
 .s2t-timer.c-yellow .s2t-timer-pill { border: 1px solid #ffe14d66; background-color: #ffe14d1f; }
 .s2t-timer.c-yellow .s2t-timer-pill-dot { background-color: #ffe14d; box-shadow: #ffe14daa 0px 0px 6px 0px; }
 .s2t-timer.c-yellow .s2t-timer-pill-text { color: #ffe14d; }
-.s2t-timer.c-orange .s2t-timer-num { color: #ff9a2e; text-shadow: 0px 0px 40px 4.0 #ff9a2ecc; }
-.s2t-timer.c-orange .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #ff9a2e2a ), to( #ff9a2e00 ) ); }
+.s2t-timer.c-orange .s2t-timer-num { color: #ff9a2e; }
 .s2t-timer.c-orange .s2t-timer-pill { border: 1px solid #ff9a2e66; background-color: #ff9a2e1f; }
 .s2t-timer.c-orange .s2t-timer-pill-dot { background-color: #ff9a2e; box-shadow: #ff9a2eaa 0px 0px 6px 0px; }
 .s2t-timer.c-orange .s2t-timer-pill-text { color: #ff9a2e; }
-.s2t-timer.c-purple .s2t-timer-num { color: #c77dff; text-shadow: 0px 0px 40px 4.0 #c77dffcc; }
-.s2t-timer.c-purple .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #c77dff2a ), to( #c77dff00 ) ); }
+.s2t-timer.c-purple .s2t-timer-num { color: #c77dff; }
 .s2t-timer.c-purple .s2t-timer-pill { border: 1px solid #c77dff66; background-color: #c77dff1f; }
 .s2t-timer.c-purple .s2t-timer-pill-dot { background-color: #c77dff; box-shadow: #c77dffaa 0px 0px 6px 0px; }
 .s2t-timer.c-purple .s2t-timer-pill-text { color: #c77dff; }
-.s2t-timer.c-cyan .s2t-timer-num { color: #4df2ff; text-shadow: 0px 0px 40px 4.0 #4df2ffcc; }
-.s2t-timer.c-cyan .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #4df2ff2a ), to( #4df2ff00 ) ); }
+.s2t-timer.c-cyan .s2t-timer-num { color: #4df2ff; }
 .s2t-timer.c-cyan .s2t-timer-pill { border: 1px solid #4df2ff66; background-color: #4df2ff1f; }
 .s2t-timer.c-cyan .s2t-timer-pill-dot { background-color: #4df2ff; box-shadow: #4df2ffaa 0px 0px 6px 0px; }
 .s2t-timer.c-cyan .s2t-timer-pill-text { color: #4df2ff; }
-.s2t-timer.c-grey .s2t-timer-num { color: #a0a8b0; text-shadow: 0px 0px 40px 4.0 #a0a8b0cc; }
-.s2t-timer.c-grey .s2t-timer-halo { background-color: gradient( radial, 50% 50%, 0% 0%, 50% 50%, from( #a0a8b02a ), to( #a0a8b000 ) ); }
+.s2t-timer.c-grey .s2t-timer-num { color: #a0a8b0; }
 .s2t-timer.c-grey .s2t-timer-pill { border: 1px solid #a0a8b066; background-color: #a0a8b01f; }
 .s2t-timer.c-grey .s2t-timer-pill-dot { background-color: #a0a8b0; box-shadow: #a0a8b0aa 0px 0px 6px 0px; }
 .s2t-timer.c-grey .s2t-timer-pill-text { color: #a0a8b0; }
