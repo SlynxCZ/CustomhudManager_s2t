@@ -81,12 +81,8 @@ void* HudPlugin::OnToolkitQuery(const char* iface, int* ret)
         return static_cast<ICustomhudManager*>(&hud::hudManager);
     }
 
-    // Another revision of the same interface: say so once, so a plugin built
-    // against an older or newer SDK finds out why it has no HUD.
-    if (!strncmp(iface, "ICustomhudManager", 11))
-        TOOLKIT_LOG(this, "A plugin asked for %s; this plugin serves %s -- rebuild the plugin or update CustomhudManager_s2t.\n", iface, CUSTOMHUD_MANAGER_INTERFACE_VERSION);
-
     if (ret) *ret = TOOLKIT_IFACE_FAILED;
+
     return nullptr;
 }
 

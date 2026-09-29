@@ -168,7 +168,7 @@ namespace hud
         {
             // Owned by this plugin: the core drops the callback when the
             // plugin unloads, and it goes with the entity otherwise.
-            g_pToolkitCustomHud->HookCustomHudClick(g_PluginID, layout,
+            g_pToolkitCustomHud->HookCustomHudClick(layout,
                 [](CCSPlayerController* player, CCSCustomHudLayout*, const char* buttonId)
                 {
                     hudmenu::OnLayoutClick(player, buttonId);
