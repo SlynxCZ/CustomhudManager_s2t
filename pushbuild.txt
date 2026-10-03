@@ -7,3 +7,4 @@ The interface is this repository's own header, public/ICustomhudManager.h (ICust
 ICustomhudManager002: ShowReveal (a card in the upper middle with an entrance: tag, title, line, info, captioned block) and ShowStats (a label/value panel at the bottom left with a bar and a two-number footer, sending only what changed); HudColor::Gold. Needs the funplayhud addon with the new panels.
 ICustomhudManager004: the objective tracker, HudOverlay::Blood, HudMenu::Grid tiles and a second line on menu options; the card in the top right corner; the fade animations play (unquoted animation names, no more missing-animation console spam); curtime clock. Built against the handler-owned toolkit API: needs source2toolkit v1.0.35 and the funplayhud addon with the new layouts.
 Rebuilt against plugin API 3 (IToolkitCommands003): needs source2toolkit v1.0.37, which refuses the earlier builds.
+Author string is a u8 literal and MSVC builds with /utf-8, so the name is UTF-8 on every compiler.
