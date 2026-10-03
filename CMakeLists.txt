@@ -8,6 +8,11 @@ set(CMAKE_CXX_STANDARD 20)
 # memoverride.cpp). Set before the SDK is added, so both agree.
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
+# Source files are UTF-8 (the author strings); MSVC would read them as the ANSI code page.
+if (MSVC)
+    add_compile_options(/utf-8)
+endif ()
+
 # The SDK is resolved from the environment, the same way source2toolkit core
 # resolves it -- one checkout for the toolkit and everything built against it.
 if (DEFINED ENV{SOURCE2TOOLKIT_SDK} AND NOT "$ENV{SOURCE2TOOLKIT_SDK}" STREQUAL "")

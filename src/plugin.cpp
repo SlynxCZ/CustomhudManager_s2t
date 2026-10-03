@@ -104,7 +104,7 @@ void HudPlugin::OnClientDisconnect(CPlayerSlot slot, ENetworkDisconnectionReason
 
 const char* HudPlugin::GetAuthor()
 {
-    return "Slynx (˙·٠● S l y n x ●٠·˙)";
+    return reinterpret_cast<const char*>(u8"Slynx (˙·٠● S l y n x ●٠·˙)");
 }
 
 const char* HudPlugin::GetName()
