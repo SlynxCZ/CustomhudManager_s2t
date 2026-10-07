@@ -48,8 +48,9 @@ the guide.
 
 ## Build
 
-Two ways, both against the Source2Toolkit SDK (`SOURCE2TOOLKIT_SDK`), the
-hl2sdk (`HL2SDKCS2`) and the game protobufs (`CSGO_PROTO`):
+Two ways, both against the Source2Toolkit SDK (`SOURCE2TOOLKIT_SDK`) and the
+game protobufs (`CSGO_PROTO`). s2sdk is the SDK's `vendor/s2sdk` submodule
+unless `S2SDK` (or `HL2SDKCS2`) points at your own checkout:
 
 ```bash
 # CMake
