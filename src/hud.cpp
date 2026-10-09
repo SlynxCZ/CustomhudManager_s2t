@@ -292,9 +292,13 @@ namespace hud
         return m_text.name.c_str();
     }
 
-    void HudManager::ShowText(CCSPlayerController* player, HudSlot slot, const char* text, float seconds, HudTextStyle style)
+    void HudManager::ShowText(CPlayerSlot slot, HudSlot hudSlot, const char* text, float seconds, HudTextStyle style)
     {
-        const int index = static_cast<int>(slot);
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
+        const int index = static_cast<int>(hudSlot);
         if (index < 0 || index >= static_cast<int>(HudSlot::Count) || !text)
             return;
 
@@ -316,9 +320,13 @@ namespace hud
         s.expire = ExpireAt(seconds);
     }
 
-    void HudManager::HideText(CCSPlayerController* player, HudSlot slot)
+    void HudManager::HideText(CPlayerSlot slot, HudSlot hudSlot)
     {
-        const int index = static_cast<int>(slot);
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
+        const int index = static_cast<int>(hudSlot);
         if (index < 0 || index >= static_cast<int>(HudSlot::Count))
             return;
 
@@ -337,8 +345,12 @@ namespace hud
             layout->SetHasClass(kSlotPanel[index], kShow, false, player);
     }
 
-    void HudManager::ShowPrompt(CCSPlayerController* player, const char* key, const char* text, float progress)
+    void HudManager::ShowPrompt(CPlayerSlot slot, const char* key, const char* text, float progress)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -367,8 +379,12 @@ namespace hud
         state->prompt = true;
     }
 
-    void HudManager::HidePrompt(CCSPlayerController* player)
+    void HudManager::HidePrompt(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->prompt)
             return;
@@ -386,24 +402,28 @@ namespace hud
         state->bar = false;
     }
 
-    void HudManager::HideAll(CCSPlayerController* player)
+    void HudManager::HideAll(CPlayerSlot slot)
     {
-        for (int i = 0; i < static_cast<int>(HudSlot::Count); ++i)
-            HideText(player, static_cast<HudSlot>(i));
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
 
-        HidePrompt(player);
-        ClearToasts(player);
-        HideAnnounce(player);
-        HideCountdown(player);
-        HideStatus(player, -1);
-        HideProgress(player);
-        ClearFeed(player);
-        HideOverlay(player);
-        HideTimer(player);
-        HideCard(player);
-        HideReveal(player);
-        HideStats(player);
-        HideTracker(player);
+        for (int i = 0; i < static_cast<int>(HudSlot::Count); ++i)
+            HideText(slot, static_cast<HudSlot>(i));
+
+        HidePrompt(slot);
+        ClearToasts(slot);
+        HideAnnounce(slot);
+        HideCountdown(slot);
+        HideStatus(slot, -1);
+        HideProgress(slot);
+        ClearFeed(slot);
+        HideOverlay(slot);
+        HideTimer(slot);
+        HideCard(slot);
+        HideReveal(slot);
+        HideStats(slot);
+        HideTracker(slot);
 
         if (PlayerState* state = StateOf(player))
         {
@@ -422,8 +442,12 @@ namespace hud
 
     // ---- ICustomhudManager002 ------------------------------------------------------
 
-    void HudManager::ShowToast(CCSPlayerController* player, HudToastStyle style, const char* title, const char* text, float seconds)
+    void HudManager::ShowToast(CPlayerSlot slot, HudToastStyle style, const char* title, const char* text, float seconds)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -458,8 +482,12 @@ namespace hud
         Restart(layout, player, kToastPanel[0], "in-a", "in-b", state->toastAnim);
     }
 
-    void HudManager::ClearToasts(CCSPlayerController* player)
+    void HudManager::ClearToasts(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state)
             return;
@@ -477,8 +505,12 @@ namespace hud
         }
     }
 
-    void HudManager::ShowAnnounce(CCSPlayerController* player, const char* title, const char* subtitle, float seconds, HudColor color)
+    void HudManager::ShowAnnounce(CPlayerSlot slot, const char* title, const char* subtitle, float seconds, HudColor color)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -494,8 +526,12 @@ namespace hud
         state->announce.expire = ExpireAt(seconds);
     }
 
-    void HudManager::HideAnnounce(CCSPlayerController* player)
+    void HudManager::HideAnnounce(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->announce.shown)
             return;
@@ -507,8 +543,12 @@ namespace hud
             layout->SetHasClass("hud_announce", kShow, false, player);
     }
 
-    void HudManager::ShowCountdown(CCSPlayerController* player, const char* text, float seconds, HudColor color)
+    void HudManager::ShowCountdown(CPlayerSlot slot, const char* text, float seconds, HudColor color)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -523,8 +563,12 @@ namespace hud
         state->countdown.expire = ExpireAt(seconds);
     }
 
-    void HudManager::HideCountdown(CCSPlayerController* player)
+    void HudManager::HideCountdown(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->countdown.shown)
             return;
@@ -536,8 +580,12 @@ namespace hud
             layout->SetHasClass("hud_countdown", kShow, false, player);
     }
 
-    void HudManager::ShowStatus(CCSPlayerController* player, int chip, const char* label, const char* value, HudColor color)
+    void HudManager::ShowStatus(CPlayerSlot slot, int chip, const char* label, const char* value, HudColor color)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         if (chip < 0 || chip >= kChips)
             return;
 
@@ -560,8 +608,12 @@ namespace hud
         }
     }
 
-    void HudManager::HideStatus(CCSPlayerController* player, int chip)
+    void HudManager::HideStatus(CPlayerSlot slot, int chip)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state)
             return;
@@ -591,8 +643,12 @@ namespace hud
         }
     }
 
-    void HudManager::ShowProgress(CCSPlayerController* player, const char* label, const char* value, float progress, HudColor color)
+    void HudManager::ShowProgress(CPlayerSlot slot, const char* label, const char* value, float progress, HudColor color)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -606,8 +662,12 @@ namespace hud
         state->progress.shown = true;
     }
 
-    void HudManager::HideProgress(CCSPlayerController* player)
+    void HudManager::HideProgress(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->progress.shown)
             return;
@@ -618,8 +678,12 @@ namespace hud
             layout->SetHasClass("hud_progress", kShow, false, player);
     }
 
-    void HudManager::ShowHit(CCSPlayerController* player, int damage, bool headshot, bool kill)
+    void HudManager::ShowHit(CPlayerSlot slot, int damage, bool headshot, bool kill)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -660,8 +724,12 @@ namespace hud
         state->hit.expire = Now() + kHitSeconds;
     }
 
-    void HudManager::AddFeed(CCSPlayerController* player, HudToastStyle style, const char* time, const char* text, float seconds)
+    void HudManager::AddFeed(CPlayerSlot slot, HudToastStyle style, const char* time, const char* text, float seconds)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -698,8 +766,12 @@ namespace hud
         }
     }
 
-    void HudManager::ClearFeed(CCSPlayerController* player)
+    void HudManager::ClearFeed(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state)
             return;
@@ -724,8 +796,12 @@ namespace hud
         }
     }
 
-    void HudManager::ShowOverlay(CCSPlayerController* player, HudOverlay overlay, const char* text, float seconds)
+    void HudManager::ShowOverlay(CPlayerSlot slot, HudOverlay overlay, const char* text, float seconds)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -739,8 +815,12 @@ namespace hud
         state->overlay.expire = ExpireAt(seconds);
     }
 
-    void HudManager::HideOverlay(CCSPlayerController* player)
+    void HudManager::HideOverlay(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->overlay.shown)
             return;
@@ -754,13 +834,21 @@ namespace hud
 
     // ---- ICustomhudManager004 ------------------------------------------------------
 
-    void HudManager::OpenMenu(PluginId owner, CCSPlayerController* player, HudMenu* menu)
+    void HudManager::OpenMenu(PluginId owner, CPlayerSlot slot, HudMenu* menu)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         hudmenu::Open(owner, player, menu);
     }
 
-    void HudManager::ShowTimer(CCSPlayerController* player, const char* tag, const char* time, const char* sub, HudColor color)
+    void HudManager::ShowTimer(CPlayerSlot slot, const char* tag, const char* time, const char* sub, HudColor color)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -779,8 +867,12 @@ namespace hud
         state->timer.expire = -1.0f;
     }
 
-    void HudManager::HideTimer(CCSPlayerController* player)
+    void HudManager::HideTimer(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->timer.shown)
             return;
@@ -792,8 +884,12 @@ namespace hud
             layout->SetHasClass("hud_timer", kShow, false, player);
     }
 
-    void HudManager::ShowCard(CCSPlayerController* player, const char* tag, const char* title, const char* sub, HudColor color)
+    void HudManager::ShowCard(CPlayerSlot slot, const char* tag, const char* title, const char* sub, HudColor color)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -823,8 +919,12 @@ namespace hud
         state->card.expire = -1.0f;
     }
 
-    void HudManager::HideCard(CCSPlayerController* player)
+    void HudManager::HideCard(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->card.shown)
             return;
@@ -862,8 +962,12 @@ namespace hud
         };
     }
 
-    void HudManager::ShowReveal(CCSPlayerController* player, const HudReveal& reveal)
+    void HudManager::ShowReveal(CPlayerSlot slot, const HudReveal& reveal)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -887,8 +991,12 @@ namespace hud
         state->reveal.expire = ExpireAt(reveal.seconds);
     }
 
-    void HudManager::HideReveal(CCSPlayerController* player)
+    void HudManager::HideReveal(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->reveal.shown)
             return;
@@ -900,8 +1008,12 @@ namespace hud
             layout->SetHasClass("hud_reveal", kShow, false, player);
     }
 
-    void HudManager::ShowStats(CCSPlayerController* player, const HudStats& stats)
+    void HudManager::ShowStats(CPlayerSlot slot, const HudStats& stats)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -959,8 +1071,12 @@ namespace hud
         }
     }
 
-    void HudManager::HideStats(CCSPlayerController* player)
+    void HudManager::HideStats(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->stats.shown)
             return;
@@ -982,8 +1098,12 @@ namespace hud
         constexpr const char* kTrackerRowBar[HudTracker::kRows] = { "hud_tracker_row_0_bar", "hud_tracker_row_1_bar", "hud_tracker_row_2_bar", "hud_tracker_row_3_bar" };
     }
 
-    void HudManager::ShowTracker(CCSPlayerController* player, const HudTracker& tracker)
+    void HudManager::ShowTracker(CPlayerSlot slot, const HudTracker& tracker)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         CCSCustomHudLayout* layout = TextLayout();
         if (!state || !layout)
@@ -1041,8 +1161,12 @@ namespace hud
         }
     }
 
-    void HudManager::HideTracker(CCSPlayerController* player)
+    void HudManager::HideTracker(CPlayerSlot slot)
     {
+        CCSPlayerController* player = CCSPlayerController::FromSlot(slot);
+        if (!player)
+            return;
+
         PlayerState* state = StateOf(player);
         if (!state || !state->tracker.shown)
             return;
@@ -1081,7 +1205,7 @@ namespace hud
                     continue;
 
                 if (controller())
-                    HideText(player, static_cast<HudSlot>(i));
+                    HideText(CPlayerSlot(slot), static_cast<HudSlot>(i));
                 else
                     state.slots[i] = SlotState{};
             }
@@ -1111,13 +1235,13 @@ namespace hud
             }
 
             if (due(state.announce))
-                controller() ? HideAnnounce(player) : (void)(state.announce = Timed{});
+                controller() ? HideAnnounce(CPlayerSlot(slot)) : (void)(state.announce = Timed{});
             if (due(state.countdown))
-                controller() ? HideCountdown(player) : (void)(state.countdown = Timed{});
+                controller() ? HideCountdown(CPlayerSlot(slot)) : (void)(state.countdown = Timed{});
             if (due(state.overlay))
-                controller() ? HideOverlay(player) : (void)(state.overlay = Timed{});
+                controller() ? HideOverlay(CPlayerSlot(slot)) : (void)(state.overlay = Timed{});
             if (due(state.reveal))
-                controller() ? HideReveal(player) : (void)(state.reveal = Timed{});
+                controller() ? HideReveal(CPlayerSlot(slot)) : (void)(state.reveal = Timed{});
 
             if (due(state.hit))
             {
@@ -1142,8 +1266,7 @@ namespace hud
 
         // The controller is still there on the disconnect callback, so the
         // entity's per-slot state can be cleared for the next occupant.
-        if (CCSPlayerController* player = CCSPlayerController::FromSlot(index))
-            HideAll(player);
+        HideAll(slot);
 
         ResetState(m_players[index]);
     }

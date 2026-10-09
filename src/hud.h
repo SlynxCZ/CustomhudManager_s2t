@@ -71,46 +71,46 @@ namespace hud
 
         // ICustomhudManager
         bool IsAvailable() override;
-        void ShowText(CCSPlayerController* player, HudSlot slot, const char* text, float seconds, HudTextStyle style) override;
-        void HideText(CCSPlayerController* player, HudSlot slot) override;
-        void ShowPrompt(CCSPlayerController* player, const char* key, const char* text, float progress) override;
-        void HidePrompt(CCSPlayerController* player) override;
-        void HideAll(CCSPlayerController* player) override;
+        void ShowText(CPlayerSlot slot, HudSlot hudSlot, const char* text, float seconds, HudTextStyle style) override;
+        void HideText(CPlayerSlot slot, HudSlot hudSlot) override;
+        void ShowPrompt(CPlayerSlot slot, const char* key, const char* text, float progress) override;
+        void HidePrompt(CPlayerSlot slot) override;
+        void HideAll(CPlayerSlot slot) override;
         const char* LayoutName() override;
 
         // ICustomhudManager002
-        void ShowToast(CCSPlayerController* player, HudToastStyle style, const char* title, const char* text, float seconds) override;
-        void ClearToasts(CCSPlayerController* player) override;
-        void ShowAnnounce(CCSPlayerController* player, const char* title, const char* subtitle, float seconds, HudColor color) override;
-        void HideAnnounce(CCSPlayerController* player) override;
-        void ShowCountdown(CCSPlayerController* player, const char* text, float seconds, HudColor color) override;
-        void HideCountdown(CCSPlayerController* player) override;
-        void ShowStatus(CCSPlayerController* player, int chip, const char* label, const char* value, HudColor color) override;
-        void HideStatus(CCSPlayerController* player, int chip) override;
-        void ShowProgress(CCSPlayerController* player, const char* label, const char* value, float progress, HudColor color) override;
-        void HideProgress(CCSPlayerController* player) override;
-        void ShowHit(CCSPlayerController* player, int damage, bool headshot, bool kill) override;
-        void AddFeed(CCSPlayerController* player, HudToastStyle style, const char* time, const char* text, float seconds) override;
-        void ClearFeed(CCSPlayerController* player) override;
-        void ShowOverlay(CCSPlayerController* player, HudOverlay overlay, const char* text, float seconds) override;
-        void HideOverlay(CCSPlayerController* player) override;
+        void ShowToast(CPlayerSlot slot, HudToastStyle style, const char* title, const char* text, float seconds) override;
+        void ClearToasts(CPlayerSlot slot) override;
+        void ShowAnnounce(CPlayerSlot slot, const char* title, const char* subtitle, float seconds, HudColor color) override;
+        void HideAnnounce(CPlayerSlot slot) override;
+        void ShowCountdown(CPlayerSlot slot, const char* text, float seconds, HudColor color) override;
+        void HideCountdown(CPlayerSlot slot) override;
+        void ShowStatus(CPlayerSlot slot, int chip, const char* label, const char* value, HudColor color) override;
+        void HideStatus(CPlayerSlot slot, int chip) override;
+        void ShowProgress(CPlayerSlot slot, const char* label, const char* value, float progress, HudColor color) override;
+        void HideProgress(CPlayerSlot slot) override;
+        void ShowHit(CPlayerSlot slot, int damage, bool headshot, bool kill) override;
+        void AddFeed(CPlayerSlot slot, HudToastStyle style, const char* time, const char* text, float seconds) override;
+        void ClearFeed(CPlayerSlot slot) override;
+        void ShowOverlay(CPlayerSlot slot, HudOverlay overlay, const char* text, float seconds) override;
+        void HideOverlay(CPlayerSlot slot) override;
 
         // ICustomhudManager004
-        void OpenMenu(PluginId owner, CCSPlayerController* player, HudMenu* menu) override;
-        void ShowTimer(CCSPlayerController* player, const char* tag, const char* time, const char* sub, HudColor color) override;
-        void HideTimer(CCSPlayerController* player) override;
-        void ShowCard(CCSPlayerController* player, const char* tag, const char* title, const char* sub, HudColor color) override;
-        void HideCard(CCSPlayerController* player) override;
+        void OpenMenu(PluginId owner, CPlayerSlot slot, HudMenu* menu) override;
+        void ShowTimer(CPlayerSlot slot, const char* tag, const char* time, const char* sub, HudColor color) override;
+        void HideTimer(CPlayerSlot slot) override;
+        void ShowCard(CPlayerSlot slot, const char* tag, const char* title, const char* sub, HudColor color) override;
+        void HideCard(CPlayerSlot slot) override;
 
         // ICustomhudManager002
-        void ShowReveal(CCSPlayerController* player, const HudReveal& reveal) override;
-        void HideReveal(CCSPlayerController* player) override;
-        void ShowStats(CCSPlayerController* player, const HudStats& stats) override;
-        void HideStats(CCSPlayerController* player) override;
+        void ShowReveal(CPlayerSlot slot, const HudReveal& reveal) override;
+        void HideReveal(CPlayerSlot slot) override;
+        void ShowStats(CPlayerSlot slot, const HudStats& stats) override;
+        void HideStats(CPlayerSlot slot) override;
 
         // ICustomhudManager003
-        void ShowTracker(CCSPlayerController* player, const HudTracker& tracker) override;
-        void HideTracker(CCSPlayerController* player) override;
+        void ShowTracker(CPlayerSlot slot, const HudTracker& tracker) override;
+        void HideTracker(CPlayerSlot slot) override;
 
         // plugin
         void Init();

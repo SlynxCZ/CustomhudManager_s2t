@@ -123,7 +123,8 @@
  *   hud_stats_foot               the footer (`show`); hud_stats_foot_l / _r halves
  *                                (`show`, c-*) with _label / _value Labels
  *
- * Everything is per player: what one player sees, nobody else does.
+ * Everything is per player: what one player sees, nobody else does. A player is
+ * addressed by the slot; a slot nobody is in is a no-op.
  */
 
 #ifndef _INCLUDE_ICUSTOMHUD_MANAGER_H
@@ -132,8 +133,7 @@
 #pragma once
 #include "source2toolkit/IToolkitTypes.h"
 #include "source2toolkit/IToolkitMenus.h"
-
-class CCSPlayerController;
+#include "playerslot.h"
 
 /// Where on the screen a text goes. Each is a panel of the layout; the
 /// stylesheet decides where that panel is.
@@ -356,7 +356,7 @@ struct HudTracker
     HudColor color = HudColor::Gold;
 };
 
-#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager004"
+#define CUSTOMHUD_MANAGER_INTERFACE_VERSION "ICustomhudManager005"
 
 class ICustomhudManager
 {
@@ -375,31 +375,31 @@ public:
     /**
      * @brief Shows a text in a slot for one player, replacing what was there.
      *
-     * @param player  Who sees it
-     * @param slot    Where
+     * @param slot    Who sees it
+     * @param hudSlot Where
      * @param text    Plain text; "\n" starts a new line, there is no markup
      * @param seconds How long, 0 or less: until HideText()
      * @param style   Colour, size and the offset from the slot's place
      */
-    virtual void ShowText(CCSPlayerController* player, HudSlot slot, const char* text, float seconds, HudTextStyle style = {}) = 0;
+    virtual void ShowText(CPlayerSlot slot, HudSlot hudSlot, const char* text, float seconds, HudTextStyle style = {}) = 0;
 
     /// Clears one slot for one player.
-    virtual void HideText(CCSPlayerController* player, HudSlot slot) = 0;
+    virtual void HideText(CPlayerSlot slot, HudSlot hudSlot) = 0;
 
     /**
      * @brief Shows the interaction prompt: a key cap and what it does.
      *
-     * @param player   Who sees it
+     * @param slot     Who sees it
      * @param key      The key, e.g. "E"
      * @param text     e.g. "Steal the weapon"
      * @param progress 0..1 draws a progress bar; below 0 hides the bar
      */
-    virtual void ShowPrompt(CCSPlayerController* player, const char* key, const char* text, float progress = -1.0f) = 0;
+    virtual void ShowPrompt(CPlayerSlot slot, const char* key, const char* text, float progress = -1.0f) = 0;
 
-    virtual void HidePrompt(CCSPlayerController* player) = 0;
+    virtual void HidePrompt(CPlayerSlot slot) = 0;
 
     /// Every slot, the prompt and everything below, for one player.
-    virtual void HideAll(CCSPlayerController* player) = 0;
+    virtual void HideAll(CPlayerSlot slot) = 0;
 
     /// The layout name the core uses (HudTextLayout in core.json).
     virtual const char* LayoutName() = 0;
@@ -410,15 +410,15 @@ public:
      * Four are kept; a fifth pushes the oldest out. Each goes away after
      * its own time.
      *
-     * @param player  Who sees it
+     * @param slot    Who sees it
      * @param style   Its colour and the edge (HudToastStyle)
      * @param title   One line, bold
      * @param text    The message under it, may wrap; "" for none
      * @param seconds How long, 0 or less: until ClearToasts() or pushed out
      */
-    virtual void ShowToast(CCSPlayerController* player, HudToastStyle style, const char* title, const char* text, float seconds) = 0;
+    virtual void ShowToast(CPlayerSlot slot, HudToastStyle style, const char* title, const char* text, float seconds) = 0;
 
-    virtual void ClearToasts(CCSPlayerController* player) = 0;
+    virtual void ClearToasts(CPlayerSlot slot) = 0;
 
     /**
      * @brief The big announcement in the upper centre: a title and a line
@@ -426,9 +426,9 @@ public:
      *
      * @param seconds How long, 0 or less: until HideAnnounce()
      */
-    virtual void ShowAnnounce(CCSPlayerController* player, const char* title, const char* subtitle, float seconds, HudColor color = HudColor::White) = 0;
+    virtual void ShowAnnounce(CPlayerSlot slot, const char* title, const char* subtitle, float seconds, HudColor color = HudColor::White) = 0;
 
-    virtual void HideAnnounce(CCSPlayerController* player) = 0;
+    virtual void HideAnnounce(CPlayerSlot slot) = 0;
 
     /**
      * @brief The giant centre number or word: "3", "2", "1", "GO". Each call
@@ -436,9 +436,9 @@ public:
      *
      * @param seconds How long this text stays, 0 or less: until HideCountdown()
      */
-    virtual void ShowCountdown(CCSPlayerController* player, const char* text, float seconds, HudColor color = HudColor::White) = 0;
+    virtual void ShowCountdown(CPlayerSlot slot, const char* text, float seconds, HudColor color = HudColor::White) = 0;
 
-    virtual void HideCountdown(CCSPlayerController* player) = 0;
+    virtual void HideCountdown(CPlayerSlot slot) = 0;
 
     /**
      * @brief A status chip in the row under the round timer: a small label
@@ -446,10 +446,10 @@ public:
      *
      * @param chip 0 .. 3, left to right
      */
-    virtual void ShowStatus(CCSPlayerController* player, int chip, const char* label, const char* value, HudColor color = HudColor::White) = 0;
+    virtual void ShowStatus(CPlayerSlot slot, int chip, const char* label, const char* value, HudColor color = HudColor::White) = 0;
 
     /// One chip, or every chip with a negative index.
-    virtual void HideStatus(CCSPlayerController* player, int chip) = 0;
+    virtual void HideStatus(CPlayerSlot slot, int chip) = 0;
 
     /**
      * @brief A labelled progress bar under the crosshair. Stays until
@@ -458,9 +458,9 @@ public:
      * @param value    Text at the right end of the label row, e.g. "7 s"; "" for none
      * @param progress 0..1
      */
-    virtual void ShowProgress(CCSPlayerController* player, const char* label, const char* value, float progress, HudColor color = HudColor::White) = 0;
+    virtual void ShowProgress(CPlayerSlot slot, const char* label, const char* value, float progress, HudColor color = HudColor::White) = 0;
 
-    virtual void HideProgress(CCSPlayerController* player) = 0;
+    virtual void HideProgress(CPlayerSlot slot) = 0;
 
     /**
      * @brief Hit feedback: the crosshair flashes and the damage drifts up
@@ -468,7 +468,7 @@ public:
      *
      * @param damage 0 or less: the flash alone
      */
-    virtual void ShowHit(CCSPlayerController* player, int damage, bool headshot, bool kill) = 0;
+    virtual void ShowHit(CPlayerSlot slot, int damage, bool headshot, bool kill) = 0;
 
     /**
      * @brief A row in the event feed at the top left, newest first. Five are
@@ -477,9 +477,9 @@ public:
      * @param time    The short text at the left, e.g. "12:04" or "R3"; "" for none
      * @param seconds How long the row stays, 0 or less: until ClearFeed() or pushed out
      */
-    virtual void AddFeed(CCSPlayerController* player, HudToastStyle style, const char* time, const char* text, float seconds) = 0;
+    virtual void AddFeed(CPlayerSlot slot, HudToastStyle style, const char* time, const char* text, float seconds) = 0;
 
-    virtual void ClearFeed(CCSPlayerController* player) = 0;
+    virtual void ClearFeed(CPlayerSlot slot) = 0;
 
     /**
      * @brief A full-screen tint: poison, burn, freeze, heal, a white-out or
@@ -487,9 +487,9 @@ public:
      *
      * @param seconds How long, 0 or less: until HideOverlay()
      */
-    virtual void ShowOverlay(CCSPlayerController* player, HudOverlay overlay, const char* text, float seconds) = 0;
+    virtual void ShowOverlay(CPlayerSlot slot, HudOverlay overlay, const char* text, float seconds) = 0;
 
-    virtual void HideOverlay(CCSPlayerController* player) = 0;
+    virtual void HideOverlay(CPlayerSlot slot) = 0;
 
     /**
      * @brief Opens a HudMenu for a player, on the Panorama HUD.
@@ -501,10 +501,10 @@ public:
      * CenterHtmlMenu is the fallback.
      *
      * @param owner  Plugin the menu belongs to
-     * @param player Target player
+     * @param slot   Target player
      * @param menu   The menu; must outlive the time it is open
      */
-    virtual void OpenMenu(PluginId owner, CCSPlayerController* player, HudMenu* menu) = 0;
+    virtual void OpenMenu(PluginId owner, CPlayerSlot slot, HudMenu* menu) = 0;
 
     /**
      * @brief The timer: a tag pill, the time and a line after it in a row
@@ -513,15 +513,15 @@ public:
      * A countdown is one call a second with the new time; the caller keeps
      * the clock. Stays until HideTimer().
      *
-     * @param player Who sees it
+     * @param slot   Who sees it
      * @param tag    The pill above the number, e.g. "FREE DAY"; "" for none
      * @param time   The number, e.g. "2:45"
      * @param sub    The line under it; "" for none
      * @param color  The halo and the number
      */
-    virtual void ShowTimer(CCSPlayerController* player, const char* tag, const char* time, const char* sub, HudColor color) = 0;
+    virtual void ShowTimer(CPlayerSlot slot, const char* tag, const char* time, const char* sub, HudColor color) = 0;
 
-    virtual void HideTimer(CCSPlayerController* player) = 0;
+    virtual void HideTimer(CPlayerSlot slot) = 0;
 
     /**
      * @brief The corner card: a tag, a title and a subtitle in a box at the
@@ -529,40 +529,40 @@ public:
      *
      * Stays until HideCard(); a new call replaces the texts in place.
      *
-     * @param player Who sees it
+     * @param slot   Who sees it
      * @param tag    Small line above the title, e.g. "DAY 3"; "" for none
      * @param title  The big line
      * @param sub    The line under it; "" for none
      * @param color  The edge and the tag
      */
-    virtual void ShowCard(CCSPlayerController* player, const char* tag, const char* title, const char* sub, HudColor color) = 0;
+    virtual void ShowCard(CPlayerSlot slot, const char* tag, const char* title, const char* sub, HudColor color) = 0;
 
-    virtual void HideCard(CCSPlayerController* player) = 0;
+    virtual void HideCard(CPlayerSlot slot) = 0;
 
     /**
      * @brief A reveal card in the upper middle of the screen, with an
      *        entrance each call; goes after reveal.seconds.
      */
-    virtual void ShowReveal(CCSPlayerController* player, const HudReveal& reveal) = 0;
+    virtual void ShowReveal(CPlayerSlot slot, const HudReveal& reveal) = 0;
 
-    virtual void HideReveal(CCSPlayerController* player) = 0;
+    virtual void HideReveal(CPlayerSlot slot) = 0;
 
     /**
      * @brief The stats panel at the bottom left, until HideStats(). Meant to
      *        be called again whenever a value changes -- every second is
      *        fine: only what changed is sent to the player.
      */
-    virtual void ShowStats(CCSPlayerController* player, const HudStats& stats) = 0;
+    virtual void ShowStats(CPlayerSlot slot, const HudStats& stats) = 0;
 
-    virtual void HideStats(CCSPlayerController* player) = 0;
+    virtual void HideStats(CPlayerSlot slot) = 0;
 
     /**
      * @brief The tracker on the right, until HideTracker(). Call it again when
      *        something changes -- only what changed is sent.
      */
-    virtual void ShowTracker(CCSPlayerController* player, const HudTracker& tracker) = 0;
+    virtual void ShowTracker(CPlayerSlot slot, const HudTracker& tracker) = 0;
 
-    virtual void HideTracker(CCSPlayerController* player) = 0;
+    virtual void HideTracker(CPlayerSlot slot) = 0;
 };
 
 #endif // _INCLUDE_ICUSTOMHUD_MANAGER_H
