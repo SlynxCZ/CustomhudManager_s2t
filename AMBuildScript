@@ -295,8 +295,8 @@ MMSPlugin.detectSDKs()
 MMSPlugin.configure()
 
 BuildScripts = [
-  'AMBuilder',
-  'PackageScript'
+  'makefiles/AMBuilder',
+  'makefiles/PackageScript'
 ]
 
 builder.Build(BuildScripts, { 'MMSPlugin': MMSPlugin, 'ToolkitSdk': ToolkitSdk })

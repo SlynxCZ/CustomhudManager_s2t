@@ -21,20 +21,14 @@ cmd /c "`"$vcvars`" && set" | ForEach-Object {
 ### --- SDKs ------------------------------------------------------------------
 $SDK_DIR = "$env:TEMP\sdk"
 $SOURCE2TOOLKITSDK_DIR = "$SDK_DIR\source2toolkit-sdk"
-$HL2SDK_DIR = "$SDK_DIR\hl2sdk-cs2"
-$CSGO_PROTO_DIR = "$SDK_DIR\Protobufs"
 if (Test-Path $SDK_DIR) { Remove-Item -Recurse -Force $SDK_DIR }
 New-Item -ItemType Directory -Force $SDK_DIR | Out-Null
 git clone --recursive https://github.com/Source2Toolkit/source2toolkit-sdk.git $SOURCE2TOOLKITSDK_DIR
-git clone --recursive --branch cs2 --single-branch https://github.com/alliedmodders/hl2sdk.git $HL2SDK_DIR
-git clone --recursive https://github.com/SteamTracking/Protobufs $CSGO_PROTO_DIR
 $env:SOURCE2TOOLKIT_SDK = $SOURCE2TOOLKITSDK_DIR
-$env:HL2SDKCS2 = $HL2SDK_DIR
-$env:CSGO_PROTO = "$CSGO_PROTO_DIR\csgo"
 
 ### --- Build (AMBuild) --------------------------------------------------------
-# AMBuild itself is installed by the workflow; the hl2sdk comes from HL2SDKCS2,
-# the manifests from the SDK's submodule.
+# AMBuild itself is installed by the workflow; s2sdk and the manifests come
+# from the SDK's submodules.
 $REPO_ROOT = Split-Path -Parent $PSScriptRoot
 $BUILD_DIR = "$REPO_ROOT\build"
 if (Test-Path $BUILD_DIR) { Remove-Item -Recurse -Force $BUILD_DIR }

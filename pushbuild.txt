@@ -9,3 +9,4 @@ ICustomhudManager004: the objective tracker, HudOverlay::Blood, HudMenu::Grid ti
 Rebuilt against plugin API 3 (IToolkitCommands003): needs source2toolkit v1.0.37, which refuses the earlier builds.
 Author string is a u8 literal and MSVC builds with /utf-8, so the name is UTF-8 on every compiler.
 Rebuild against SteamDatabase/Protobufs with its per-game descriptor.proto (bd8f82d); no code changes.
+Rebuilt against the Source2Toolkit SDK on alliedmodders/s2sdk (protobufs from s2sdk's own protos, steam_api linked by the SDK); no code changes.
