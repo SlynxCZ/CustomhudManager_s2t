@@ -34,8 +34,8 @@
 #pragma once
 #include "ICustomhudManager.h"
 
-#include "ehandle.h"
-#include "playerslot.h"
+#include <ehandle.h>
+#include <playerslot.h>
 
 #include <functional>
 #include <string>

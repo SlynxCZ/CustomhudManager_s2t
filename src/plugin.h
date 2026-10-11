@@ -33,8 +33,8 @@
  */
 #pragma once
 
-#include "source2toolkit/IToolkitPlugin.h"
-#include "source2toolkit/IToolkitApi.h"
+#include <source2toolkit/IToolkitApi.h>
+#include <source2toolkit/IToolkitPlugin.h>
 
 // TOOLKIT_SAVEVARS() fills one global per subsystem, so every subsystem header
 // has to be in scope for its interface name.

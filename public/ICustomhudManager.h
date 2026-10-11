@@ -131,9 +131,9 @@
 #define _INCLUDE_ICUSTOMHUD_MANAGER_H
 
 #pragma once
-#include "source2toolkit/IToolkitTypes.h"
-#include "source2toolkit/IToolkitMenus.h"
-#include "playerslot.h"
+#include <playerslot.h>
+#include <source2toolkit/IToolkitMenus.h>
+#include <source2toolkit/IToolkitTypes.h>
 
 /// Where on the screen a text goes. Each is a panel of the layout; the
 /// stylesheet decides where that panel is.
