@@ -21,22 +21,7 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'public'),
   ]
 
-  # The version the plugin reports: the release tag and the commit.
-  sha = os.environ.get("GITHUB_SHA_SHORT", "Local")
-  semver = os.environ.get("SEMVER", "Local")
-  binary.compiler.defines += [
-    f'GITHUB_SHA="{sha}"',
-    f'SEMVER="{semver}"',
-  ]
-
   binary.custom = [ToolkitSdk.Protoc(builder, sdk_target)]
-
-  # Export only CreateInterface -- the toolkit finds the plugin through it, and
-  # nothing else should leak out of the binary.
-  if cxx.target.platform == 'linux':
-    binary.compiler.linkflags += [
-      '-Wl,--version-script=' + os.path.join(builder.sourcePath, 'ExportMap')
-    ]
 
   nodes = builder.Add(binary)
   MMSPlugin.binaries += [nodes]

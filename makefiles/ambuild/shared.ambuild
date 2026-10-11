@@ -1,0 +1,32 @@
+# vim: set sts=2 ts=8 sw=2 tw=99 et ft=python:
+#
+# Settings every platform shares -- AMBuild twin of makefiles/cmake/shared.cmake.
+# The per-platform ones are in linux.ambuild / windows.ambuild.
+import os
+
+# Every compiler, before the platform file adds its own flags.
+def ConfigureCxx(cxx, options):
+  if options.opt == '1':
+    cxx.defines += ['NDEBUG']
+  if options.debug == '1':
+    cxx.defines += ['DEBUG', '_DEBUG']
+
+# The plugin binary, before SdkHelpers and the toolkit SDK add their includes,
+# libraries and sources.
+def ConfigureBinary(context, binary, sdk, MMSPlugin):
+  cxx = binary.compiler
+
+  cxx.cxxincludes += [
+    os.path.join(context.currentSourcePath),
+  ]
+
+  for other_sdk in MMSPlugin.sdk_manifests:
+    cxx.defines += ['SE_{}={}'.format(other_sdk['define'], other_sdk['code'])]
+
+  # The version the plugin reports: the release tag and the commit.
+  sha = os.environ.get("GITHUB_SHA_SHORT", "Local")
+  semver = os.environ.get("SEMVER", "Local")
+  cxx.defines += [
+    f'GITHUB_SHA="{sha}"',
+    f'SEMVER="{semver}"',
+  ]
