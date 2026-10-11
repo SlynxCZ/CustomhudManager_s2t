@@ -36,10 +36,9 @@
 #include "hudmenu.h"
 #include "plugin.h"
 
-#include "globalvars.h"
-
-#include "source2toolkit/schema/entity/classes/CCSCustomHudLayout.h"
-#include "source2toolkit/schema/entity/classes/CCSPlayerController.h"
+#include <engine2/gameshareddefs.h>
+#include <source2toolkit/schema/entity/classes/CCSCustomHudLayout.h>
+#include <source2toolkit/schema/entity/classes/CCSPlayerController.h>
 
 #include <algorithm>
 #include <cmath>
