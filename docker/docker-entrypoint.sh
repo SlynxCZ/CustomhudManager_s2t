@@ -29,7 +29,8 @@ git clone --recursive https://github.com/Source2Toolkit/source2toolkit-sdk.git "
 export SOURCE2TOOLKIT_SDK="$SOURCE2TOOLKITSDK_DIR"
 
 ### --- Build (AMBuild) ----------------------------------------------------
-# s2sdk and the manifests both come from the SDK's submodules.
+# s2sdk and s2sdk-manifests both come from the SDK's submodules
+# (vendor/s2sdk, vendor/s2sdk-manifests).
 rm -rf build
 mkdir build
 cd build

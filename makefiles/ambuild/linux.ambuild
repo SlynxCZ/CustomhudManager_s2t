@@ -3,14 +3,12 @@
 # Linux (GCC / Clang) settings -- AMBuild twin of makefiles/cmake/linux.cmake.
 import os
 
+# The SDK's Linux defines (_LINUX, POSIX, stricmp=strcasecmp, ...) and libraries
+# come from s2sdk-manifests' linux.ambuild, through SdkHelpers.configureCxx.
 def ConfigureCxx(cxx, options):
   cxx.defines += [
-    'stricmp=strcasecmp',
-    '_stricmp=strcasecmp',
     '_snprintf=snprintf',
-    '_vsnprintf=vsnprintf',
     'HAVE_STDINT_H',
-    'GNUC',
   ]
   cxx.cflags += [
     '-pipe',
@@ -80,7 +78,7 @@ def ConfigureCxx(cxx, options):
   # This needs to be after our optimization flags which could otherwise disable it.
   cxx.cflags += ['-fno-omit-frame-pointer']
 
-  cxx.defines += ['_LINUX', 'LINUX', 'POSIX', '_FILE_OFFSET_BITS=64']
+  cxx.defines += ['_FILE_OFFSET_BITS=64']
   if cxx.family == 'gcc':
     cxx.linkflags += ['-static-libgcc']
   elif cxx.family == 'clang':

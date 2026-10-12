@@ -27,8 +27,8 @@ git clone --recursive https://github.com/Source2Toolkit/source2toolkit-sdk.git $
 $env:SOURCE2TOOLKIT_SDK = $SOURCE2TOOLKITSDK_DIR
 
 ### --- Build (AMBuild) --------------------------------------------------------
-# AMBuild itself is installed by the workflow; s2sdk and the manifests come
-# from the SDK's submodules.
+# AMBuild itself is installed by the workflow; s2sdk and s2sdk-manifests come
+# from the SDK's submodules (vendor/s2sdk, vendor/s2sdk-manifests).
 $REPO_ROOT = Split-Path -Parent $PSScriptRoot
 $BUILD_DIR = "$REPO_ROOT\build"
 if (Test-Path $BUILD_DIR) { Remove-Item -Recurse -Force $BUILD_DIR }

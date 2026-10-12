@@ -21,7 +21,8 @@ for sdk_target in MMSPlugin.sdk_targets:
     os.path.join(builder.sourcePath, 'public'),
   ]
 
-  binary.custom = [ToolkitSdk.Protoc(builder, sdk_target)]
+  # The game protobufs (s2sdk_protobufs() in the SDK's CMakeLists.txt).
+  ToolkitSdk.AddProtobufs(builder, binary, sdk_target)
 
   nodes = builder.Add(binary)
   MMSPlugin.binaries += [nodes]
